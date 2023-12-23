@@ -56,53 +56,61 @@ public class PlayerInventory : NetworkBehaviour
         ServerManager.Despawn(objToDespawn,DespawnType.Destroy);
     }
     void AddToInventory(Item newItem){
+        Debug.Log("add");
         foreach(InventoryObject invObj in inventoryObjects){
             if(invObj.item == newItem){
                 invObj.amount++;
                 return;
             }
         }
-        inventoryObjects.Add(new InventoryObject(){item = newItem, amount = 1});
+        inventoryObjects.Add(new InventoryObject(){item = newItem, amount = 1,itemImage=newItem.itemImage});
+        
     }
     public void ToggleInventory(){
         if(inventoryPanel.activeSelf){
-            Debug.Log("Press E");
             inventoryPanel.SetActive(false);
             //Cursor.lockState = CursorLockMode.Locked;
             //Cursor.visible = false;
         }
         else if(!inventoryPanel.activeSelf){
+            UpdateInvUI();
             inventoryPanel.SetActive(true);
             //Cursor.lockState = CursorLockMode.None;
             //Cursor.visible = true;
         }
     }
-    /*void UpdateInvUI()
+    void UpdateInvUI()
     {
-        foreach (Transform child in invObjectHolder)
+        foreach (Transform child in inventoryHolder)
             Destroy(child.gameObject);
 
         foreach (InventoryObject invObj in inventoryObjects)
         {
-            GameObject obj = Instantiate(invCanvasObject, invObjectHolder);
+            GameObject obj = Instantiate(inventoryObject, inventoryHolder);
+            Image slotImage = obj.GetComponent<Image>();
+            TextMeshProUGUI itemCountText = obj.GetComponentInChildren<TextMeshProUGUI>();
+            slotImage.sprite = invObj.item.itemImage;
+            itemCountText.text = invObj.amount.ToString();
 
-            // Assuming that the invCanvasObject has an Image component at index 1 (change as needed)
-            Image itemImage = obj.transform.GetChild(1).GetComponent<Image>();
+            //obj.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = invObj.item.itemName + " - " + invObj.amount;
 
-            // Load and assign the sprite to the Image component
-            if (invObj.item.itemImage != null) // Assuming itemImage is a reference to the sprite
-                itemImage.sprite = invObj.item.itemImage;
-
-            // Assuming you want to display the amount as text
-            obj.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = invObj.amount.ToString();
-
-            obj.GetComponent<Button>().onClick.AddListener(delegate { DropItem(invObj.item); });
+            /*Image imageComponent = */
+            
+            /*if (invObj.item.itemImage != null)
+            {
+                imageComponent = invObj.item.itemImage;
+                imageComponent.enabled = true;
+            }
+            else
+            {
+                imageComponent.enabled = false;
+            }*/
         }
-    }*/
-
+    }
     [System.Serializable]
     public class InventoryObject{
         public Item item;
         public int amount;
+        public Sprite itemImage;
     }
 }

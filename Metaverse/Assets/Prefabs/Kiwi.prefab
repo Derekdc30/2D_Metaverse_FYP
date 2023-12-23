@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1228607473190234939}
   - component: {fileID: 1228607473190234933}
   - component: {fileID: 5552866927150766114}
+  - component: {fileID: 5744666447241749717}
   m_Layer: 6
   m_Name: Kiwi
   m_TagString: Untagged
@@ -139,8 +140,21 @@ MonoBehaviour:
   _initializeOrder: 0
   _defaultDespawnType: 0
   NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: 0
+  <PrefabId>k__BackingField: 11
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 13494681202160693663
+--- !u!114 &5744666447241749717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1228607473190234936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8e19e596a2f23841ad87a52aecf2327, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemScriptable: {fileID: 11400000, guid: 84dba287f5959354dafb660ab51fb44b, type: 2}
