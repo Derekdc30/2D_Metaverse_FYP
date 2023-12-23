@@ -91,20 +91,6 @@ public class PlayerInventory : NetworkBehaviour
             TextMeshProUGUI itemCountText = obj.GetComponentInChildren<TextMeshProUGUI>();
             slotImage.sprite = invObj.item.itemImage;
             itemCountText.text = invObj.amount.ToString();
-
-            //obj.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = invObj.item.itemName + " - " + invObj.amount;
-
-            /*Image imageComponent = */
-            
-            /*if (invObj.item.itemImage != null)
-            {
-                imageComponent = invObj.item.itemImage;
-                imageComponent.enabled = true;
-            }
-            else
-            {
-                imageComponent.enabled = false;
-            }*/
         }
     }
     [System.Serializable]
