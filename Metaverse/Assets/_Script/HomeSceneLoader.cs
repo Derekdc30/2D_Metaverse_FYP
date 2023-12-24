@@ -15,25 +15,27 @@ public class HomeSceneLoader : MonoBehaviour
         NetworkObject nob = other.GetComponent<NetworkObject>();
         if(nob != null){
             LoadScene(nob);
-            //UnloadScene(nob);
         }
     }
     void LoadScene(NetworkObject nob)
     { 
         if(!nob.Owner.IsActive){return;}
-
-        SceneLookupData lookup = new SceneLookupData(_stackedSceneHandle,"HomeScene");
+        SceneLookupData lookup;
+        if(this.tag == "TP_Home" ){
+            lookup = new SceneLookupData(_stackedSceneHandle,"HomeScene");
+        }
+        else if(this.tag == "TP_Main"){
+            lookup = new SceneLookupData(_stackedSceneHandle,"MainScene");
+        }
+        else{
+            lookup = new SceneLookupData(_stackedSceneHandle,"MainScene");
+        }
         SceneLoadData sld =  new SceneLoadData(lookup);
         sld.Options.AllowStacking = true;
         sld.MovedNetworkObjects = new NetworkObject[] {nob};
         sld.ReplaceScenes = ReplaceOption.All;
         InstanceFinder.SceneManager.LoadConnectionScenes(nob.Owner,sld);
     }
-    /*void UnloadScene(NetworkObject nob){
-        if(!nob.Owner.IsActive) {return;}
-        SceneUnloadData sld = new SceneUnloadData("MainScene");
-        InstanceFinder.SceneManager.UnloadConnectionScenes(sld);
-    }*/
     private void Start() {
         InstanceFinder.SceneManager.OnLoadEnd += SceneManager_OnLoadEnd;
     }
