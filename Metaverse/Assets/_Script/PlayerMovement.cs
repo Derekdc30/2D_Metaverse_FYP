@@ -2,6 +2,7 @@ using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : NetworkBehaviour
 {
@@ -27,12 +28,15 @@ public class PlayerMovement : NetworkBehaviour
         bool moving = (moveHorizontal != 0f || moveVertical != 0f);
         _animating.SetMoving(moving);
     }
-    void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("TP_Home"))
         {
-            Debug.Log("Collide");
-            //SendPlayerToOwnIsland(other.gameObject);
+            SendPlayerToOwnIsland();
         }
+    }
+    void SendPlayerToOwnIsland()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("UserHome");
     }
 }
