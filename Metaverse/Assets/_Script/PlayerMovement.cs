@@ -27,5 +27,12 @@ public class PlayerMovement : NetworkBehaviour
         bool moving = (moveHorizontal != 0f || moveVertical != 0f);
         _animating.SetMoving(moving);
     }
-
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("TP_Home"))
+        {
+            Debug.Log("Collide");
+            //SendPlayerToOwnIsland(other.gameObject);
+        }
+    }
 }
