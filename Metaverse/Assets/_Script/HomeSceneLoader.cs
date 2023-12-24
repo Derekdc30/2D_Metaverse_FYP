@@ -5,6 +5,7 @@ using FishNet;
 using FishNet.Object;
 using FishNet.Managing.Logging;
 using FishNet.Managing.Scened;
+using UnityEngine.UI;
 
 public class HomeSceneLoader : MonoBehaviour
 {

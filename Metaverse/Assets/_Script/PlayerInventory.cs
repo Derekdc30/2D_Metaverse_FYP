@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using UnityEngine; 
+using UnityEngine.SceneManagement;
 using FishNet.Object;
 using TMPro;
 using UnityEngine.UI;
+
 
 public class PlayerInventory : NetworkBehaviour
 {
@@ -17,7 +19,6 @@ public class PlayerInventory : NetworkBehaviour
     [SerializeField] LayerMask pickupLayer;
     [SerializeField] float pickupDistance;
     [SerializeField] KeyCode pickupButton = KeyCode.F;
-    Camera cam;
     Transform worldObjectHolder;
     public override void OnStartClient(){
         base.OnStartClient();
@@ -25,7 +26,6 @@ public class PlayerInventory : NetworkBehaviour
             enabled = false;
             return;
         }
-        cam = Camera.main;
         worldObjectHolder = GameObject.FindWithTag("WorldObjects").transform;
         inventoryPanel = GameObject.FindWithTag("Inventory");
         inventoryHolder = GameObject.FindWithTag("InventoryHolder").transform;
@@ -33,13 +33,13 @@ public class PlayerInventory : NetworkBehaviour
         if(inventoryPanel.activeSelf){
             ToggleInventory();
         }
-    }
-    
+    }    
     private void Update(){
-        if(Input.GetKeyDown(pickupButton)){ Pickup();}
-        if(Input.GetKeyDown(inventoryButton)) { ToggleInventory();}
+        if(Input.GetKeyDown(pickupButton)){ Debug.Log("Press F"); Pickup();}
+        if(Input.GetKeyDown(inventoryButton)) { Debug.Log("Press E"); ToggleInventory();}
     }
     void Pickup(){
+        
         RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, pickupDistance, pickupLayer);
 
         if (hit.collider != null)
