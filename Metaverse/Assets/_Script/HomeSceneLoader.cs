@@ -20,7 +20,7 @@ public class HomeSceneLoader : MonoBehaviour
     }
     void LoadScene(NetworkObject nob)
     { 
-        if(!nob.Owner.IsActive){return;}
+        if(!nob.Owner.IsActive){return;} 
         SceneLookupData lookup;
         if(this.tag == "TP_Home" ){
             lookup = new SceneLookupData(_stackedSceneHandle,"HomeScene");

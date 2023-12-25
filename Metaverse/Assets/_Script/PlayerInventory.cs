@@ -34,6 +34,9 @@ public class PlayerInventory : NetworkBehaviour
             ToggleInventory();
         }
     }    
+    private void Start() {
+        Debug.Log("Start");
+    }
     private void Update(){
         if(Input.GetKeyDown(pickupButton)){ Debug.Log("Press F"); Pickup();}
         if(Input.GetKeyDown(inventoryButton)) { Debug.Log("Press E"); ToggleInventory();}
