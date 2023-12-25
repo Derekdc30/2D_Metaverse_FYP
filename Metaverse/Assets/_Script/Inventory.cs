@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour
+public class DontDestroy : MonoBehaviour
 {
-    private static Inventory instance;
+    private static DontDestroy instance;
 
     private void Awake()
     {

@@ -41,9 +41,14 @@ public class PlayerInventory : NetworkBehaviour
         if(Input.GetKeyDown(pickupButton)){ Debug.Log("Press F"); Pickup();}
         if(Input.GetKeyDown(inventoryButton)) { Debug.Log("Press E"); ToggleInventory();}
     }
-    void Pickup(){
-        
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, pickupDistance, pickupLayer);
+    void Pickup()
+{
+    // Define directions to check (up, down, left, right)
+    Vector2[] directions = { transform.up, -transform.up, -transform.right, transform.right };
+
+    foreach (Vector2 direction in directions)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, pickupDistance, pickupLayer);
 
         if (hit.collider != null)
         {
@@ -52,9 +57,12 @@ public class PlayerInventory : NetworkBehaviour
             {
                 AddToInventory(groundItem.itemScriptable);
                 DespawnObject(groundItem.gameObject);
+                // If you only want to pick up one item in any direction, you can break out of the loop here
+                break;
             }
         }
     }
+}
     [ServerRpc(RequireOwnership = false)]
     void DespawnObject(GameObject objToDespawn){
         ServerManager.Despawn(objToDespawn,DespawnType.Destroy);
