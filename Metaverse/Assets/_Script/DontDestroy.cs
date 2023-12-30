@@ -2,22 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour
+public class DontDestroy : MonoBehaviour
 {
-    private static Inventory instance;
+    private static DontDestroy instance;
+    public List<GameObject> objectsToPersist = new List<GameObject>();
 
     private void Awake()
     {
-        // Check if an instance already exists
+        // Ensure only one instance of the manager exists
         if (instance == null)
         {
-            // If no instance exists, make this the singleton instance
             instance = this;
-            DontDestroyOnLoad(transform.gameObject);
+            DontDestroyOnLoad(gameObject);
+
+            // Apply DontDestroyOnLoad to each object in the list
+            foreach (GameObject obj in objectsToPersist)
+            {
+                DontDestroyOnLoad(obj);
+            }
         }
         else
         {
-            // If an instance already exists, destroy this duplicate
             Destroy(gameObject);
         }
     }
