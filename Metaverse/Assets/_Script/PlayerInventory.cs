@@ -30,13 +30,8 @@ public class PlayerInventory : NetworkBehaviour
         inventoryPanel = GameObject.FindWithTag("Inventory");
         inventoryHolder = GameObject.FindWithTag("InventoryHolder").transform;
 
-        if(inventoryPanel.activeSelf){
-            ToggleInventory();
-        }
+        inventoryPanel.SetActive(false);
     }    
-    private void Start() {
-        Debug.Log("Start");
-    }
     private void Update(){
         if(Input.GetKeyDown(pickupButton)){ Debug.Log("Press F"); Pickup();}
         if(Input.GetKeyDown(inventoryButton)) { Debug.Log("Press E"); ToggleInventory();}
@@ -79,16 +74,13 @@ public class PlayerInventory : NetworkBehaviour
         
     }
     public void ToggleInventory(){
+        Debug.Log("Toggle inv");
         if(inventoryPanel.activeSelf){
             inventoryPanel.SetActive(false);
-            //Cursor.lockState = CursorLockMode.Locked;
-            //Cursor.visible = false;
         }
         else if(!inventoryPanel.activeSelf){
             UpdateInvUI();
             inventoryPanel.SetActive(true);
-            //Cursor.lockState = CursorLockMode.None;
-            //Cursor.visible = true;
         }
     }
     void UpdateInvUI()

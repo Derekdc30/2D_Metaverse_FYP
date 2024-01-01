@@ -5,24 +5,18 @@ using UnityEngine;
 public class DontDestroy : MonoBehaviour
 {
     private static DontDestroy instance;
-    public List<GameObject> objectsToPersist = new List<GameObject>();
-
-    private void Awake()
+     private void Awake()
     {
-        // Ensure only one instance of the manager exists
+        // Check if an instance already exists
         if (instance == null)
         {
+            // If no instance exists, make this the singleton instance
             instance = this;
-            DontDestroyOnLoad(gameObject);
-
-            // Apply DontDestroyOnLoad to each object in the list
-            foreach (GameObject obj in objectsToPersist)
-            {
-                DontDestroyOnLoad(obj);
-            }
+            DontDestroyOnLoad(transform.gameObject);
         }
         else
         {
+            // If an instance already exists, destroy this duplicate
             Destroy(gameObject);
         }
     }
