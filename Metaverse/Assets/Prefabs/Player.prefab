@@ -534,7 +534,9 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 225581097264918878}
   _networkObjectCache: {fileID: 225581097264918878}
   inventoryObjects: []
+  toolBarObjects: []
   inventoryObject: {fileID: 3756113063326624107, guid: 181a391c32c92b14ca99ae79ad4a0f1c, type: 3}
+  toolBarObject: {fileID: 3756113063326624107, guid: cb21d0f760e80f040ade99e26523a220, type: 3}
   inventoryButton: 101
   pickupLayer:
     serializedVersion: 2

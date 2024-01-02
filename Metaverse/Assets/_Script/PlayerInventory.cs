@@ -11,15 +11,19 @@ public class PlayerInventory : NetworkBehaviour
 {
     [Header("Inventory settings")]
     public List<InventoryObject> inventoryObjects = new List<InventoryObject>();
+    public List<InventoryObject> toolBarObjects = new List<InventoryObject>();
     GameObject inventoryPanel;
     Transform inventoryHolder;
     [SerializeField] GameObject inventoryObject;
+    [SerializeField] GameObject toolBarObject;
     [SerializeField] KeyCode inventoryButton = KeyCode.E;
     [Header("Pickup setting")]
     [SerializeField] LayerMask pickupLayer;
     [SerializeField] float pickupDistance;
     [SerializeField] KeyCode pickupButton = KeyCode.F;
     Transform worldObjectHolder;
+    private InventoryObject selectedInventoryObject;
+    private InventoryObject selectedToolBarObject;
     public override void OnStartClient(){
         base.OnStartClient();
         if(!base.IsOwner){
@@ -29,35 +33,35 @@ public class PlayerInventory : NetworkBehaviour
         worldObjectHolder = GameObject.FindWithTag("WorldObjects").transform;
         inventoryPanel = GameObject.FindWithTag("Inventory");
         inventoryHolder = GameObject.FindWithTag("InventoryHolder").transform;
-
+        inventoryPanel.transform.GetChild(4).GetComponent<Button>().gameObject.SetActive(false);
+        GameObject.Find("InventoryCanvas/Inventory/Equip").GetComponent<Button>().onClick.AddListener(ToolBar);
         inventoryPanel.SetActive(false);
     }    
     private void Update(){
-        if(Input.GetKeyDown(pickupButton)){ Debug.Log("Press F"); Pickup();}
-        if(Input.GetKeyDown(inventoryButton)) { Debug.Log("Press E"); ToggleInventory();}
+        if(Input.GetKeyDown(pickupButton)){ Pickup();}
+        if(Input.GetKeyDown(inventoryButton)) { ToggleInventory();}
     }
     void Pickup()
-{
-    // Define directions to check (up, down, left, right)
-    Vector2[] directions = { transform.up, -transform.up, -transform.right, transform.right };
-
-    foreach (Vector2 direction in directions)
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, pickupDistance, pickupLayer);
+        // Define directions to check (up, down, left, right)
+        Vector2[] directions = { transform.up, -transform.up, -transform.right, transform.right };
 
-        if (hit.collider != null)
+        foreach (Vector2 direction in directions)
         {
-            GroundItem groundItem = hit.collider.GetComponent<GroundItem>();
-            if (groundItem != null)
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, pickupDistance, pickupLayer);
+
+            if (hit.collider != null)
             {
-                AddToInventory(groundItem.itemScriptable);
-                DespawnObject(groundItem.gameObject);
-                // If you only want to pick up one item in any direction, you can break out of the loop here
-                break;
+                GroundItem groundItem = hit.collider.GetComponent<GroundItem>();
+                if (groundItem != null)
+                {
+                    AddToInventory(groundItem.itemScriptable);
+                    DespawnObject(groundItem.gameObject);
+                    break;
+                }
             }
         }
     }
-}
     [ServerRpc(RequireOwnership = false)]
     void DespawnObject(GameObject objToDespawn){
         ServerManager.Despawn(objToDespawn,DespawnType.Destroy);
@@ -71,11 +75,10 @@ public class PlayerInventory : NetworkBehaviour
             }
         }
         inventoryObjects.Add(new InventoryObject(){item = newItem, amount = 1,itemImage=newItem.itemImage});
-        
     }
     public void ToggleInventory(){
-        Debug.Log("Toggle inv");
         if(inventoryPanel.activeSelf){
+            inventoryPanel.transform.GetChild(4).GetComponent<Button>().gameObject.SetActive(false);
             inventoryPanel.SetActive(false);
         }
         else if(!inventoryPanel.activeSelf){
@@ -95,6 +98,54 @@ public class PlayerInventory : NetworkBehaviour
             TextMeshProUGUI itemCountText = obj.GetComponentInChildren<TextMeshProUGUI>();
             slotImage.sprite = invObj.item.itemImage;
             itemCountText.text = invObj.amount.ToString();
+            obj.GetComponent<Button>().onClick.AddListener(()=>{
+                GameObject.Find("InventoryCanvas/Inventory/Item_Description").GetComponent<TextMeshProUGUI>().text = invObj.item.itemName;
+                ActiveEquipButton();
+                SelectInventoryObject(invObj);
+                });
+        }
+    }
+    void ActiveEquipButton(){
+        if(GameObject.FindWithTag("ToolBar")){
+            GameObject.Find("InventoryCanvas/Inventory/Equip").GetComponent<Button>().gameObject.SetActive(true);
+        }
+    }
+    void SelectInventoryObject(InventoryObject selectedObject)
+    {
+        selectedInventoryObject = selectedObject;
+    }
+    void SelectToolBarObject(InventoryObject selectedObject)
+    {
+        selectedToolBarObject = selectedObject;
+    }
+    void ToolBar(){
+        if(GameObject.FindWithTag("ToolBar")){
+            Transform ToolBarHolder = GameObject.FindWithTag("ToolBarHolder").transform;
+
+            foreach(InventoryObject invObj in toolBarObjects){
+                if(invObj.item == selectedInventoryObject.item || toolBarObjects.Count>9){
+                    return;
+                }
+            }
+            toolBarObjects.Add(new InventoryObject(){item = selectedInventoryObject.item, amount = 1,itemImage=selectedInventoryObject.item.itemImage});
+
+            GameObject obj = Instantiate(toolBarObject, ToolBarHolder);
+            Image slotImage = obj.GetComponent<Image>();
+            slotImage.sprite = selectedInventoryObject.item.itemImage;
+            RectTransform rectTransform = obj.GetComponent<RectTransform>();
+            rectTransform.localScale = new Vector3(0.2f, 2f, 1f);
+            Debug.Log(toolBarObjects.Count);
+            foreach(InventoryObject invObj in toolBarObjects){
+                obj.GetComponent<Button>().onClick.AddListener(()=>{
+                SelectToolBarObject(invObj);
+                ToolBarSelect();
+                });
+            }
+        }
+    }
+    void ToolBarSelect(){
+        if(GameObject.FindWithTag("ToolBar")){
+            GameObject.Find("ToolBar/Background/ToolName").GetComponent<TextMeshProUGUI>().text = selectedToolBarObject.item.itemName;
         }
     }
     [System.Serializable]
