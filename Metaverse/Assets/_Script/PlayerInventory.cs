@@ -118,27 +118,68 @@ public class PlayerInventory : NetworkBehaviour
     {
         selectedToolBarObject = selectedObject;
     }
-    void ToolBar(){
-        if(GameObject.FindWithTag("ToolBar")){
+    void ToolBar()
+    {
+        if (GameObject.FindWithTag("ToolBar"))
+        {
             Transform ToolBarHolder = GameObject.FindWithTag("ToolBarHolder").transform;
+            bool itemInToolBar = toolBarObjects.Exists(obj => obj.item == selectedInventoryObject.item);
 
-            foreach(InventoryObject invObj in toolBarObjects){
-                if(invObj.item == selectedInventoryObject.item || toolBarObjects.Count>9){
+            // Check if there is space in the toolbar (less than 9 items)
+            if (toolBarObjects.Count < 9)
+            {
+                // If there is space, add the selected item at the end
+                toolBarObjects.Add(new InventoryObject() { item = selectedInventoryObject.item, amount = 1, itemImage = selectedInventoryObject.item.itemImage });
+            }
+            else
+            {
+                if (itemInToolBar)
+                {
+                    int index = toolBarObjects.FindIndex(obj => obj.item == selectedInventoryObject.item);
+                    toolBarObjects[index] = new InventoryObject() { item = selectedInventoryObject.item, amount = 1, itemImage = selectedInventoryObject.item.itemImage };
                     return;
                 }
+                int selectedIndex = toolBarObjects.FindIndex(obj => obj.item == selectedToolBarObject.item);
+                if (selectedIndex != -1)
+                {
+                    toolBarObjects[selectedIndex] = new InventoryObject() { item = selectedInventoryObject.item, amount = 1, itemImage = selectedInventoryObject.item.itemImage };
+                }
             }
-            toolBarObjects.Add(new InventoryObject(){item = selectedInventoryObject.item, amount = 1,itemImage=selectedInventoryObject.item.itemImage});
+            UpdateToolBarUI();
+        }
+    }
 
-            GameObject obj = Instantiate(toolBarObject, ToolBarHolder);
-            Image slotImage = obj.GetComponent<Image>();
-            slotImage.sprite = selectedInventoryObject.item.itemImage;
-            RectTransform rectTransform = obj.GetComponent<RectTransform>();
-            rectTransform.localScale = new Vector3(0.2f, 2f, 1f);
-            Debug.Log(toolBarObjects.Count);
-            foreach(InventoryObject invObj in toolBarObjects){
-                obj.GetComponent<Button>().onClick.AddListener(()=>{
-                SelectToolBarObject(invObj);
-                ToolBarSelect();
+    void UpdateToolBarUI()
+    {
+        if (GameObject.FindWithTag("ToolBar"))
+        {
+            Transform ToolBarHolder = GameObject.FindWithTag("ToolBarHolder").transform;
+
+            // Destroy existing toolbar items
+            foreach (Transform child in ToolBarHolder)
+            {
+                Destroy(child.gameObject);
+            }
+
+            // Instantiate new toolbar items
+            foreach (InventoryObject invObj in toolBarObjects)
+            {
+                GameObject obj = Instantiate(toolBarObject, ToolBarHolder);
+                Image slotImage = obj.GetComponent<Image>();
+                slotImage.sprite = invObj.item.itemImage;
+                RectTransform rectTransform = obj.GetComponent<RectTransform>();
+                rectTransform.localScale = new Vector3(0.2f, 1.8f, 1f);
+                GameObject indicator = obj.transform.Find("Highlight").gameObject;
+                indicator.SetActive(invObj == selectedToolBarObject);
+                // Add a click listener to handle selection
+                obj.GetComponent<Button>().onClick.AddListener(() => {
+                    foreach (Transform child in ToolBarHolder)
+                    {
+                        child.transform.Find("Highlight").gameObject.SetActive(false);
+                    }
+                    indicator.SetActive(true);
+                    SelectToolBarObject(invObj);
+                    ToolBarSelect();
                 });
             }
         }
