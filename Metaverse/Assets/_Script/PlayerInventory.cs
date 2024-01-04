@@ -38,6 +38,7 @@ public class PlayerInventory : NetworkBehaviour
         inventoryPanel.SetActive(false);
     }    
     private void Update(){
+        ProcessInput();
         if(Input.GetKeyDown(pickupButton)){ Pickup();}
         if(Input.GetKeyDown(inventoryButton)) { ToggleInventory();}
     }
@@ -187,6 +188,45 @@ public class PlayerInventory : NetworkBehaviour
     void ToolBarSelect(){
         if(GameObject.FindWithTag("ToolBar")){
             GameObject.Find("ToolBar/Background/ToolName").GetComponent<TextMeshProUGUI>().text = selectedToolBarObject.item.itemName;
+        }
+    }
+    void ProcessInput()
+    {
+        if (!GameObject.FindWithTag("ToolBar")){
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha1)) { SelectToolBarItem(0); }
+        else if (Input.GetKeyDown(KeyCode.Alpha2)) { SelectToolBarItem(1); }
+        else if (Input.GetKeyDown(KeyCode.Alpha3)) { SelectToolBarItem(2); }
+        else if (Input.GetKeyDown(KeyCode.Alpha4)) { SelectToolBarItem(3); }
+        else if (Input.GetKeyDown(KeyCode.Alpha5)) { SelectToolBarItem(4); }
+        else if (Input.GetKeyDown(KeyCode.Alpha6)) { SelectToolBarItem(5); }
+        else if (Input.GetKeyDown(KeyCode.Alpha7)) { SelectToolBarItem(6); }
+        else if (Input.GetKeyDown(KeyCode.Alpha8)) { SelectToolBarItem(7); }
+        else if (Input.GetKeyDown(KeyCode.Alpha9)) { SelectToolBarItem(8); }
+
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        if (scroll != 0f)
+        {
+            // Use the mouse scroll to select the next or previous toolbar item
+            int currentIndex = toolBarObjects.IndexOf(selectedToolBarObject);
+            int newIndex = (currentIndex + (scroll > 0f ? 1 : -1)) % toolBarObjects.Count;
+            if (newIndex < 0)
+            {
+                newIndex = toolBarObjects.Count - 1;
+            }
+            SelectToolBarItem(newIndex);
+        }
+    }
+
+    void SelectToolBarItem(int index)
+    {
+        if (index >= 0 && index < toolBarObjects.Count)
+        {
+            // Trigger the click event for the toolbar item at the specified index
+            Transform ToolBarHolder = GameObject.FindWithTag("ToolBarHolder").transform;
+            Button toolbarButton = ToolBarHolder.GetChild(index).GetComponent<Button>();
+            toolbarButton.onClick.Invoke();
         }
     }
     [System.Serializable]

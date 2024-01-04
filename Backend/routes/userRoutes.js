@@ -49,4 +49,5 @@ router.route('/me').get(async(req,res)=>{
     }
 })
 
+router.route('')
 module.exports = router
