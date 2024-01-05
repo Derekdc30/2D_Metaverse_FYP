@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const User = require('../Models/User')
+const FriendList = require('../Models/FriendLists')
 
 router.route('/register').post(async(req,res)=>{
     const {name, email, password} = req.body
@@ -49,5 +50,8 @@ router.route('/me').get(async(req,res)=>{
     }
 })
 
+router.route('/FriendList').post(async(req,res)=>{
+
+})
 router.route('')
 module.exports = router
