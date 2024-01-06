@@ -51,7 +51,13 @@ router.route('/me').get(async(req,res)=>{
 })
 
 router.route('/FriendList').post(async(req,res)=>{
-
+    const userEmail = req.body;
+    try {
+        const list = FriendList.findOne({email:userEmail});
+        res.status(200).json({email:userEmail, FriendList:list.Friends, waitlist: list.Waitlist });
+    } catch (error) {
+        res.status(500).json({error:"Error: "+ error});
+    }
 })
 router.route('')
 module.exports = router
