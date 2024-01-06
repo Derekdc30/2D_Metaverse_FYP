@@ -10,7 +10,6 @@ using TMPro;
 
 public class Login : MonoBehaviour
 {
-
     public GameObject emailInput;
     public GameObject passwordInput;
     public Button loginButton;

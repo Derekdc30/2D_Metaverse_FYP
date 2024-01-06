@@ -3,20 +3,20 @@ const {Schema} = mongoose
 
 const FriendListSchema = new Schema(
     {
-        Username : {
+        UserEmail : {
             type:String,
             required:true,
             unique:true
         },
         Friends:{
-            type:String,
-            required:true
+            type:Array,
+            required:false
         },
         Waitlist:{
-            type:String,
-            required:true
+            type:Array,
+            required:false
         }
     }
 )
-const FriendLists = mongoose.model('FriendList',FriendListSchema)
-module.exports = FriendLists
+const FriendList = mongoose.model('FriendList',FriendListSchema)
+module.exports = FriendList
