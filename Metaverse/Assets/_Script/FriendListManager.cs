@@ -20,6 +20,9 @@ public class FriendListManager : NetworkBehaviour
         public string FriendList;
         public string waitlist;
     }
+    public class Message{
+        public string message;
+    }
     private string[] FriendList = new string[0];
     private string[] WaitList = new string[0];
     [SerializeField] string FriendListURL = "http://127.0.0.1:3000/user/FriendList";
@@ -80,7 +83,9 @@ public class FriendListManager : NetworkBehaviour
                 GameObject obj = Instantiate(friendListObject, GameObject.FindWithTag("FriendListHolder").transform);
                 TextMeshProUGUI nameText = obj.GetComponentInChildren<TextMeshProUGUI>();
                 nameText.text = friend;
-                StartCoroutine(AddFriend(PlayerPrefs.GetString("name"),friend,1));
+                obj.GetComponent<Button>().onClick.AddListener(()=>{
+                    PendingResponse(PlayerPrefs.GetString("name"),friend);
+                });
             }
         }
         else if(GameObject.Find("FriendListCanvas/Background/AddOrRemove").activeSelf){
@@ -98,6 +103,9 @@ public class FriendListManager : NetworkBehaviour
                 GameObject obj = Instantiate(friendListObject, GameObject.FindWithTag("FriendListHolder").transform);
                 TextMeshProUGUI nameText = obj.GetComponentInChildren<TextMeshProUGUI>();
                 nameText.text = friend;
+                obj.GetComponent<Button>().onClick.AddListener(()=>{
+                    RemoveFriend(PlayerPrefs.GetString("name"),friend);
+                });
             }
         }
         else{
@@ -105,7 +113,39 @@ public class FriendListManager : NetworkBehaviour
         }
     }
     public void searchFriend(){
-        StartCoroutine(AddFriend(PlayerPrefs.GetString("name"),GameObject.Find("FriendListCanvas/Background/AddOrRemove/Add/InputField").GetComponent<TMP_InputField>().text,0));
+        StartCoroutine(FriendHandler(PlayerPrefs.GetString("name"),GameObject.Find("FriendListCanvas/Background/AddOrRemove/Add/InputField").GetComponent<TMP_InputField>().text,0));
+        GameObject.Find("FriendListCanvas/Background/AddOrRemove/Add/InputField").GetComponent<TMP_InputField>().text = "";
+    }
+    public void PendingResponse(string userName, string friendName){
+        GameObject.Find("FriendListCanvas/Background/PendingList/Response").SetActive(true);
+        GameObject.Find("FriendListCanvas/Background/PendingList/Panel").SetActive(false);
+        GameObject.Find("FriendListCanvas/Background/PendingList/Response/AcceptButton").GetComponent<Button>().onClick.AddListener(()=>{
+            StartCoroutine(FriendHandler(userName,friendName,1));
+            GameObject.Find("FriendListCanvas/Background/PendingList/Response").SetActive(false);
+            GameObject.Find("FriendListCanvas/Background/PendingList/Panel").SetActive(true);
+        });
+        GameObject.Find("FriendListCanvas/Background/PendingList/Response/DeclineButton").GetComponent<Button>().onClick.AddListener(()=>{
+            StartCoroutine(FriendHandler(userName,friendName,2));
+            GameObject.Find("FriendListCanvas/Background/PendingList/Response").SetActive(false);
+            GameObject.Find("FriendListCanvas/Background/PendingList/Panel").SetActive(true);
+        });
+    }
+    public void RemoveFriend(string userName, string friendName){
+        GameObject.Find("FriendListCanvas/Background/AddOrRemove/Response").SetActive(true);
+        GameObject.Find("FriendListCanvas/Background/AddOrRemove/Panel").SetActive(false);
+        GameObject.Find("FriendListCanvas/Background/AddOrRemove/Add").SetActive(false);
+        GameObject.Find("FriendListCanvas/Background/AddOrRemove/Response/ConfirmButton").GetComponent<Button>().onClick.AddListener(()=>{
+            StartCoroutine(FriendHandler(userName,friendName,3));
+            GameObject.Find("FriendListCanvas/Background/AddOrRemove/Response").SetActive(false);
+            GameObject.Find("FriendListCanvas/Background/AddOrRemove/Panel").SetActive(true);
+            GameObject.Find("FriendListCanvas/Background/AddOrRemove/Add").SetActive(true);
+        });
+        GameObject.Find("FriendListCanvas/Background/AddOrRemove/Response/CancelButton").GetComponent<Button>().onClick.AddListener(()=>{
+            GameObject.Find("FriendListCanvas/Background/AddOrRemove/Response").SetActive(false);
+            GameObject.Find("FriendListCanvas/Background/AddOrRemove/Panel").SetActive(true);
+            GameObject.Find("FriendListCanvas/Background/AddOrRemove/Add").SetActive(true);
+            return;
+        });
     }
     IEnumerator GetFriendList(string name){
         WWWForm form = new WWWForm();
@@ -126,13 +166,13 @@ public class FriendListManager : NetworkBehaviour
                     FriendListAction();
                 }
                 else{
-                    Debug.Log("Login failed: " + www.downloadHandler.text);
+                    Debug.Log("Error " + www.downloadHandler.text);
                 }
             }
         }
     }
 
-    IEnumerator AddFriend(string userName,string friendName,int mode){
+    IEnumerator FriendHandler(string userName,string friendName,int mode){
         WWWForm form = new WWWForm();
         form.AddField("userName",userName);
         form.AddField("friendName",friendName);
@@ -144,12 +184,19 @@ public class FriendListManager : NetworkBehaviour
             }
             else
             {
-                Debug.Log(www.downloadHandler.text);
                 if(www.responseCode == 200){
                     var responseData = JsonUtility.FromJson<FriendListData>(www.downloadHandler.text);
+                    
+                }
+                else if (www.responseCode == 501){
+                    var responseData = JsonUtility.FromJson<Message>(www.downloadHandler.text);
+                    if(GameObject.Find("FriendListCanvas/Background/AddOrRemove").activeSelf){
+                        GameObject.Find("FriendListCanvas/Background/AddOrRemove/Message").SetActive(true);
+                        GameObject.Find("FriendListCanvas/Background/AddOrRemove/Message/MessageContent").GetComponent<TextMeshProUGUI>().text = responseData.message;
+                    }
                 }
                 else{
-                    Debug.Log("Login failed: " + www.downloadHandler.text);
+                    Debug.Log("Error " + www.downloadHandler.text);
                 } 
             }
         }

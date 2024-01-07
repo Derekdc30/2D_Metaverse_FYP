@@ -72,17 +72,28 @@ router.route('/FriendList').post(async(req,res)=>{
 router.route('/AddFriend').post(async(req,res)=>{
     const {userName, friendName,mode} = req.body;
     try {
-        const friend = await User.findOne({name:friendName});
-        const current = await FriendList.findOne({UserName:userName});
-        if(!(friend && !current.Friends.includes(friendName) && userName != friendName)){
-            res.status(500).json({error:"Error"});
-            return;
-        }
+        const friend = await FriendList.findOne({UserName:friendName});
+        const currentFriendList = await FriendList.findOne({UserName:userName});
         if(mode ==0){
-            await FriendList.updateOne(
-                { UserName: friendName },
-                { $push: { Waitlist: userName}}
-            )
+            if(!friend){
+                res.status(501).json({message:"User not exist"});
+            }
+            else if(currentFriendList.Friends.includes(friendName)){
+                res.status(501).json({message:"Friend already in the Friend list"});
+            }
+            else if( userName == friendName){
+                res.status(501).json({message:"That is you!!!"});
+            }
+            else if(friend.Waitlist.includes(friendName)){
+                res.status(501).json({message:"Request already sent!"})
+            }
+            else{//error
+                await FriendList.updateOne(
+                    { UserName: friendName },
+                    { $push: { Waitlist: userName}}
+                )
+                res.status(501).json({message: "Friend Request Sent!"})
+            }
         }
         else if(mode == 1){
             await FriendList.updateOne(
@@ -94,15 +105,32 @@ router.route('/AddFriend').post(async(req,res)=>{
                 { $push: { Friends: userName}}
             )
             await FriendList.updateOne(
+                { UserName: userName },
+                { $pull: { Waitlist: friendName }}
+            );
+        }
+        else if(mode == 2){
+            await FriendList.updateOne(
+                { UserName: userName },
+                { $pull: { Waitlist: friendName }}
+            );
+        }
+        else if(mode == 3){
+            await FriendList.updateOne(
+                { UserName: userName },
+                { $pull: { Friends: friendName }}
+            );
+            await FriendList.updateOne(
                 { UserName: friendName },
-                { $pull: { Waitlist: userName }}
+                { $pull: { Friends: userName }}
             );
         }
         else{
-            res.status(500).json({error:"Error: "+ error});
+            res.status(500).json({error:"Unknow Error on Friend List"});
+            return;
         }
         const list = await FriendList.findOne({UserName:userName});
-        res.status(200).json({UserName:userName, FriendList:list.Friends, waitlist: list.Waitlist });
+        res.status(200).json({UserName:userName, FriendList:list.Friends, waitlist: list.Waitlist});
     } catch (error) {
         res.status(500).json({error:"Error: "+ error});
     }
