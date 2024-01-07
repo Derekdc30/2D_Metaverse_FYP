@@ -3,10 +3,9 @@ const {Schema} = mongoose
 
 const FriendListSchema = new Schema(
     {
-        UserEmail : {
+        UserName: {
             type:String,
             required:true,
-            unique:true
         },
         Friends:{
             type:Array,

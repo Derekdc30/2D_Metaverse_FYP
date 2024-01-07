@@ -46,30 +46,17 @@ public class Register : MonoBehaviour
             Debug.Log("Empty field"); //action on empty field
         }
         else{
-            if(UserExists(username)){
-                Debug.Log("User Exist"); //action on user name already exist
+            if(password == re_password){
+                StartCoroutine(registerroute(username,email,password));
             }
             else{
-                if(password == re_password){
-                    StartCoroutine(register(username,email,password));
-                }
-                else{
-                    Debug.Log("password not match"); //action on password not match
-                }
+                Debug.Log("password not match"); //action on password not match
             }
         }
 
         
     }
-    public bool UserExists(string UserName)
-    {
-        return false;
-    }
-    void SaveUserDatabaseToJson()
-    {
-        
-    }
-    IEnumerator register (string name, string email, string password){
+    IEnumerator registerroute (string name, string email, string password){
     WWWForm form = new WWWForm();
     form.AddField("name", name);
     form.AddField("email", email);
