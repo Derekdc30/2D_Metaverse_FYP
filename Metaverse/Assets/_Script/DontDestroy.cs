@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DontDestroy : MonoBehaviour
 {
-    private static DontDestroy instance;
-     private void Awake()
+    private DontDestroy instance;
+
+    private void Awake()
     {
         // Check if an instance already exists
         if (instance == null)
@@ -14,9 +13,9 @@ public class DontDestroy : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(transform.gameObject);
         }
-        else
+        else if (instance != this)
         {
-            // If an instance already exists, destroy this duplicate
+            // If an instance already exists and it's not this one, destroy this duplicate
             Destroy(gameObject);
         }
     }
