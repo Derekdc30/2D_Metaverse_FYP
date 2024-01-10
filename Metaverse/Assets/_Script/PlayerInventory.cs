@@ -16,7 +16,7 @@ public class PlayerInventory : NetworkBehaviour
     Transform inventoryHolder;
     [SerializeField] GameObject inventoryObject;
     [SerializeField] GameObject toolBarObject;
-    [SerializeField] KeyCode inventoryButton = KeyCode.E;
+    [SerializeField] KeyCode inventoryButton = KeyCode.Tab;
     [Header("Pickup setting")]
     [SerializeField] LayerMask pickupLayer;
     [SerializeField] float pickupDistance;

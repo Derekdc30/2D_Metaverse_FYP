@@ -217,7 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b96b404edc495974c94344339a9aedc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 5
+  _componentIndexCache: 6
   _addedNetworkObject: {fileID: 225581097264918878}
   _networkObjectCache: {fileID: 225581097264918878}
   usernameText: {fileID: 7972778418573694370}
@@ -241,6 +241,7 @@ GameObject:
   - component: {fileID: 8792517933385940804}
   - component: {fileID: 4124922894927175083}
   - component: {fileID: 6336868000994090484}
+  - component: {fileID: 2164739579952052298}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -337,6 +338,7 @@ MonoBehaviour:
   - {fileID: 5472589069425560738}
   - {fileID: 8953216946912055818}
   - {fileID: 6336868000994090484}
+  - {fileID: 2164739579952052298}
   - {fileID: 7031094927163307730}
   - {fileID: 8980191566622478109}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
@@ -537,12 +539,30 @@ MonoBehaviour:
   toolBarObjects: []
   inventoryObject: {fileID: 3756113063326624107, guid: 181a391c32c92b14ca99ae79ad4a0f1c, type: 3}
   toolBarObject: {fileID: 3756113063326624107, guid: cb21d0f760e80f040ade99e26523a220, type: 3}
-  inventoryButton: 101
+  inventoryButton: 9
   pickupLayer:
     serializedVersion: 2
     m_Bits: 64
   pickupDistance: 2
   pickupButton: 102
+--- !u!114 &2164739579952052298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7012811820414672308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e7a48ef9fcd10d448f24b0ca1c4b9a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 4
+  _addedNetworkObject: {fileID: 225581097264918878}
+  _networkObjectCache: {fileID: 225581097264918878}
+  friendListObject: {fileID: 313428034625912167, guid: 314b2536456080148aa7bea20e9819c7, type: 3}
+  FriendListURL: http://127.0.0.1:3000/user/FriendList
+  AddFriendURL: http://127.0.0.1:3000/user/AddFriend
 --- !u!1 &8517551091304458315
 GameObject:
   m_ObjectHideFlags: 0
@@ -560,7 +580,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4422428636968297135
 Transform:
   m_ObjectHideFlags: 0
@@ -601,7 +621,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 71
+  field of view: 99
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -631,6 +651,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e23fd67a6088d74f8ed4889a3edff48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 4
+  _componentIndexCache: 5
   _addedNetworkObject: {fileID: 225581097264918878}
   _networkObjectCache: {fileID: 225581097264918878}

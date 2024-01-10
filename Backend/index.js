@@ -29,7 +29,7 @@ app.get('/',()=>{
 const userRoutes = require('./routes/userRoutes')
 app.use('/user', userRoutes)
 
-mongoose.connect(`mongodb+srv://${DBUSER}:${DBPASSWORD}@cluster0.jarkwvp.mongodb.net/?retryWrites=true&w=majority`)
+mongoose.connect(`mongodb+srv://${DBUSER}:${DBPASSWORD}@metaverse.a2ymtbf.mongodb.net/?retryWrites=true&w=majority`)
 .then(()=>{
     app.listen(PORT,()=>{
         console.log("port" + PORT);
