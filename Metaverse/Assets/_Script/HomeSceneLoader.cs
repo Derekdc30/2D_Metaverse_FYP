@@ -21,22 +21,29 @@ public class HomeSceneLoader : MonoBehaviour
     void LoadScene(NetworkObject nob)
     { 
         if(!nob.Owner.IsActive){return;} 
+
         SceneLookupData lookup;
         if(this.tag == "TP_Home" ){
             lookup = new SceneLookupData(_stackedSceneHandle,"HomeScene");
         }
         else if(this.tag == "TP_Main"){
+            // Unload the home scene when the player leaves it.
+            InstanceFinder.SceneManager.UnloadConnectionScenes(nob.Owner, new SceneUnloadData(new SceneLookupData(_stackedSceneHandle,"HomeScene")));
             lookup = new SceneLookupData(_stackedSceneHandle,"MainScene");
         }
         else{
             lookup = new SceneLookupData(_stackedSceneHandle,"MainScene");
         }
+
         SceneLoadData sld =  new SceneLoadData(lookup);
         sld.Options.AllowStacking = true;
         sld.MovedNetworkObjects = new NetworkObject[] {nob};
         sld.ReplaceScenes = ReplaceOption.All;
         InstanceFinder.SceneManager.LoadConnectionScenes(nob.Owner,sld);
     }
+
+
+
     private void Start() {
         InstanceFinder.SceneManager.OnLoadEnd += SceneManager_OnLoadEnd;
     }
