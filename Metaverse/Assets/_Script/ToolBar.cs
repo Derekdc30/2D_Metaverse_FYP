@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class ToolBar : MonoBehaviour
 {
+    //deprecated
     /*[Header("Inventory settings")]
     public List<InventoryObject> inventoryObjects = new List<InventoryObject>();
     public List<Image> toolbarSlots = new List<Image>(); // References to the toolbar slots

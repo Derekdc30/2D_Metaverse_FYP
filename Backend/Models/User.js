@@ -1,3 +1,4 @@
+const { Int32 } = require('mongodb')
 const mongoose = require('mongoose')
 const {Schema} = mongoose
 
@@ -13,6 +14,10 @@ const userSchema = new Schema(
         },
         password:{
             type:String,
+            required:true
+        },
+        money:{
+            type:Number,
             required:true
         }
     }

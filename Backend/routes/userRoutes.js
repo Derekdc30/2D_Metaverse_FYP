@@ -6,7 +6,8 @@ router.route('/register').post(async(req,res)=>{
     const name = req.body.name;
     const email  = req.body.email;
     const password  = req.body.password;
-    const user = { email, name, password };
+    const money = 0;
+    const user = { email, name, password, money };
     const userFriendList = {'UserName':name,'Friends':[],'Waitlist':[]};
     if(!name|| !email || !password){
         res.status(400).json({
@@ -131,5 +132,32 @@ router.route('/AddFriend').post(async(req,res)=>{
         return res.status(500).json({error:"Error: "+ error});
     }
 })
+
+router.route('/Money').post(async(req,res)=>{
+    const Mode = req.body.mode;
+    const value = req.body.value;
+    const userName = req.body.userName;
+    try{
+        const user = await User.findOne({UserName:userName});
+        switch(Mode){
+            case '1':
+                await User.updateOne({UserName:userName},
+                    {$set:{Money: user.money+value}});
+                res.status(200).json({message:"add"});
+                break;
+            case '2':
+                await User.updateOne({UserName:userName},
+                    {$set:{Money: user.money-value}});
+                    res.status(200).json({message:"minus"});
+                break;
+            case '3':
+                res.status(200).json({name:userName, money:user.money});
+                break;
+        }
+    } catch(error){
+        res.status(500).json({error:"Error: "+error});
+    }
+})
+
 router.route('')
 module.exports = router

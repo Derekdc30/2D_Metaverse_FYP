@@ -38,10 +38,9 @@ public class FriendListManager : NetworkBehaviour
             enabled = false;
             return;
         }
+        GameObject.Find("FriendListCanvas/Background").gameObject.SetActive(false); // turn off friend list
     }
     private void Start() {
-        Debug.Log("Start");
-        GameObject.Find("FriendListCanvas/Background").gameObject.SetActive(false); // turn off friend list
     }
     public void OnListOpen(){       // this function trigger by the open friend list button
         if(!GameObject.Find("FriendListCanvas/Background")){
