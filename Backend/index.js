@@ -25,11 +25,6 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    console.log('local host');
-    res.send('Hello World!');
-});
-
 const userRoutes = require('./routes/userRoutes');
 app.use('/user', userRoutes);
 
@@ -47,7 +42,7 @@ mongoose
             // Handle messages from clients
             ws.on('message', (message) => {
                 console.log('Received message:', message);
-
+                ws.send("Greet");
                 // You can add your WebSocket logic here
             });
 
