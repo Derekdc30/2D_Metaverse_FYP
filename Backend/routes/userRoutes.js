@@ -124,7 +124,6 @@ router.route('/AddFriend').post(async(req,res)=>{
         }
         else{
             return res.status(500).json({error:"Unknow Error on Friend List"});
-            return;
         }
         const list = await FriendList.findOne({UserName:userName});
         return res.status(200).json({UserName:userName, FriendList:list.Friends, waitlist: list.Waitlist});

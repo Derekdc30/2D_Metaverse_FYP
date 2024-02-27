@@ -20,7 +20,7 @@ public class FruitMarket : NetworkBehaviour
             ToggleInventory();
         }
     }    
-
+    
     public void ToggleInventory(){
         if(FruitUI.activeSelf){
             FruitUI.SetActive(false);
