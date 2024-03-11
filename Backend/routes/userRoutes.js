@@ -137,21 +137,18 @@ router.route('/Money').post(async(req,res)=>{
     const value = req.body.value;
     const userName = req.body.userName;
     try{
-        const user = await User.findOne({UserName:userName});
+        const user = await User.findOne({name:userName});
         switch(Mode){
-            case '1':
-                await User.updateOne({UserName:userName},
-                    {$set:{Money: user.money+value}});
-                res.status(200).json({message:"add"});
-                break;
-            case '2':
-                await User.updateOne({UserName:userName},
-                    {$set:{Money: user.money-value}});
-                    res.status(200).json({message:"minus"});
-                break;
-            case '3':
-                res.status(200).json({name:userName, money:user.money});
-                break;
+            case "1":
+                await User.updateOne({name:userName},
+                    {$set:{money: user.money+value}});
+                return res.status(200).json({message:"add"});
+            case "2":
+                await User.updateOne({name:userName},
+                    {$set:{money: user.money-value}});
+                    return res.status(200).json({message:"minus"});
+            case "3":
+                return res.status(200).json({name:userName, money:user.money});
         }
     } catch(error){
         res.status(500).json({error:"Error: "+error});

@@ -326,6 +326,7 @@ GameObject:
   - component: {fileID: 4124922894927175083}
   - component: {fileID: 6336868000994090484}
   - component: {fileID: 5480228657709384559}
+  - component: {fileID: -1847148267226586383}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -644,11 +645,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _componentIndexCache: 4
-  _addedNetworkObject: {fileID: 225581097264918878, guid: a4772252d49155a4581bb5a6338c1ec9, type: 3}
+  _addedNetworkObject: {fileID: 225581097264918878}
   _networkObjectCache: {fileID: 225581097264918878}
   friendListObject: {fileID: 313428034625912167, guid: 314b2536456080148aa7bea20e9819c7, type: 3}
   FriendListURL: http://127.0.0.1:3000/user/FriendList
   AddFriendURL: http://127.0.0.1:3000/user/AddFriend
+--- !u!114 &-1847148267226586383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7012811820414672308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 597841458ec9e9648aa849f585286a91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoneyText: {fileID: 0}
+  MoneyURL: http://127.0.0.1:3000/user/Money
 --- !u!1 &8517551091304458315
 GameObject:
   m_ObjectHideFlags: 0

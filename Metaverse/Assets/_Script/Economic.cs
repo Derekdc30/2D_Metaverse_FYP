@@ -11,7 +11,7 @@ using TMPro;
 
 public class Economic : MonoBehaviour
 {
-    public TextMeshProUGUI MoneyText;
+    private TextMeshProUGUI MoneyText; 
     [SerializeField] string MoneyURL = "http://127.0.0.1:3000/user/Money";
 
     public class MoneyData{
@@ -19,8 +19,11 @@ public class Economic : MonoBehaviour
         public string money;
 
     }
-
+    private void Start() {
+        MoneyText = GameObject.FindWithTag("MoneyText").GetComponent<TextMeshProUGUI>();
+    }
     public void UpdateMoneyText(string value){
+        Debug.Log(value);
         String text = "$" + value;
         MoneyText.text = text;
     }
@@ -34,7 +37,7 @@ public class Economic : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddField("userName",name);
         form.AddField("value",value);
-        form.AddField("Mode",mode);
+        form.AddField("mode",mode);
         using (UnityWebRequest www = UnityWebRequest.Post(MoneyURL, form)){
             yield return www.SendWebRequest();
             if(www.result == UnityWebRequest.Result.ConnectionError){

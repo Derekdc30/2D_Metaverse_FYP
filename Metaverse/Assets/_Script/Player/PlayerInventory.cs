@@ -24,12 +24,15 @@ public class PlayerInventory : NetworkBehaviour
     Transform worldObjectHolder;
     private InventoryObject selectedInventoryObject;
     private InventoryObject selectedToolBarObject;
+    private Economic economic; 
     public override void OnStartClient(){
         base.OnStartClient();
         if(!base.IsOwner){
             enabled = false;
             return;
         }
+        economic = GetComponent<Economic>();
+        economic.SyncMoneyroutine("0","3",PlayerPrefs.GetString("name"));
         worldObjectHolder = GameObject.FindWithTag("WorldObjects").transform;
         inventoryPanel = GameObject.FindWithTag("Inventory");
         inventoryHolder = GameObject.FindWithTag("InventoryHolder").transform;
@@ -37,7 +40,8 @@ public class PlayerInventory : NetworkBehaviour
         GameObject.Find("InventoryCanvas/Inventory/Equip").GetComponent<Button>().onClick.AddListener(ToolBar);
         inventoryPanel.SetActive(false);
     }    
-    private void Update(){
+    private void Update()
+    {
         ProcessInput();
         if(Input.GetKeyDown(pickupButton)){ Pickup();}
         if(Input.GetKeyDown(inventoryButton)) { ToggleInventory();}
@@ -67,7 +71,7 @@ public class PlayerInventory : NetworkBehaviour
     void DespawnObject(GameObject objToDespawn){
         ServerManager.Despawn(objToDespawn,DespawnType.Destroy);
     }
-    void AddToInventory(Item newItem){
+    public void AddToInventory(Item newItem){
         Debug.Log("add");
         foreach(InventoryObject invObj in inventoryObjects){
             if(invObj.item == newItem){

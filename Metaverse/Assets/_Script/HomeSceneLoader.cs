@@ -37,7 +37,11 @@ public class HomeSceneLoader : MonoBehaviour
         SceneLookupData lookup;
         if (this.tag == "TP_Home")
         {
+            if (entering){
+                InstanceFinder.SceneManager.UnloadConnectionScenes(nob.Owner, new SceneUnloadData(new SceneLookupData(_stackedSceneHandle, "MainScene")));
+            }
             lookup = new SceneLookupData(_stackedSceneHandle, "HomeScene");
+            
         }
         else if (this.tag == "TP_Main")
         {
