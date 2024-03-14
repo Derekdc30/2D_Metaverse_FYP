@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const User = require('../Models/User')
 const FriendList = require('../Models/Friendlist');
+const Inventory = require('../Models/Inventory');
 
 router.route('/register').post(async(req,res)=>{
     const name = req.body.name;
@@ -152,6 +153,67 @@ router.route('/Money').post(async(req,res)=>{
         }
     } catch(error){
         res.status(500).json({error:"Error: "+error});
+    }
+})
+/*
+1 -> update 
+2 -> remove 
+3 -> get
+*/
+router.route("/Inventory").post(async(req,res)=>{
+    const Mode = req.body.mode;
+    const userName = req.body.userName;
+    const item = req.body.item;
+    const value = req.body.value;
+
+    try {
+        // Find the inventory for the specified user
+        const inventory = await Inventory.findOne({ UserName: userName });
+
+        switch (Mode) {
+            case 1:
+                // Check if the item already exists in the array
+                const existingIndex = inventory.Items.findIndex((existingItem) => existingItem === item);
+
+                if (existingIndex !== -1) {
+                    // Update the value for the existing item
+                    inventory.Value[existingIndex] = value;
+                } else {
+                    // Add a new item and its value
+                    inventory.Items.push(item);
+                    inventory.Value.push(value);
+                }
+
+                // Save the updated inventory
+                await inventory.save();
+                res.status(200).json({ message: 'Inventory updated successfully' });
+                break;
+
+            case 2:
+                // Remove the item if it exists
+                const itemIndexToRemove = inventory.Items.findIndex((existingItem) => existingItem === item);
+
+                if (itemIndexToRemove !== -1) {
+                    inventory.Items.splice(itemIndexToRemove, 1);
+                    inventory.Value.splice(itemIndexToRemove, 1);
+                    await inventory.save();
+                    res.status(200).json({ message: 'Item removed from inventory' });
+                } else {
+                    res.status(404).json({ error: 'Item not found in inventory' });
+                }
+                break;
+
+            case 3:
+                // Get the current inventory
+                res.status(200).json({ items: inventory.Items, values: inventory.Value });
+                break;
+
+            default:
+                res.status(400).json({ error: 'Invalid mode' });
+        }
+    } catch (error) {
+        console.error('Error updating inventory:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 })
 
