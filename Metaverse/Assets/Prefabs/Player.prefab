@@ -439,7 +439,7 @@ MonoBehaviour:
   _initializeOrder: 0
   _defaultDespawnType: 0
   NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: 9
+  <PrefabId>k__BackingField: 11
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 83102251
   <SceneId>k__BackingField: 0
@@ -632,6 +632,17 @@ MonoBehaviour:
     m_Bits: 64
   pickupDistance: 2
   pickupButton: 102
+  Itemlist:
+  - {fileID: 11400000, guid: 3d132d153a3e5874eb21200f9fbebfac, type: 2}
+  - {fileID: 11400000, guid: b4165db3e58e0e14a90be783df14b590, type: 2}
+  - {fileID: 11400000, guid: a7a4f61004be3e9408802e7ffc9e09a0, type: 2}
+  - {fileID: 11400000, guid: 6519697ff51006b4bba47cb8bfbaa5a4, type: 2}
+  - {fileID: 11400000, guid: 84dba287f5959354dafb660ab51fb44b, type: 2}
+  - {fileID: 11400000, guid: 80b8004b9a5897c49b06c89cb5963a9f, type: 2}
+  - {fileID: 11400000, guid: 874f61fd12a5ae844a14cbf5a37ddb37, type: 2}
+  Items: []
+  Value: []
+  InventoryURL: http://127.0.0.1:3000/user/Inventory
 --- !u!114 &5480228657709384559
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -662,7 +673,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 597841458ec9e9648aa849f585286a91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoneyText: {fileID: 0}
   MoneyURL: http://127.0.0.1:3000/user/Money
 --- !u!1 &8517551091304458315
 GameObject:

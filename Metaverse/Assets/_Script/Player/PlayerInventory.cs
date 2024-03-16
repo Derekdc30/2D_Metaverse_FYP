@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine; 
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
 using FishNet.Object;
 using TMPro;
 using UnityEngine.UI;
@@ -24,6 +25,15 @@ public class PlayerInventory : NetworkBehaviour
     Transform worldObjectHolder;
     private InventoryObject selectedInventoryObject;
     private InventoryObject selectedToolBarObject;
+    [Header("Sync")]
+    public Item[] Itemlist;
+    private string[] Items = new string[0];
+    private string[] Value = new string[0];
+    [SerializeField] string InventoryURL = "http://127.0.0.1:3000/user/Inventory";
+    public class InventoryData{
+        public string Items;
+        public string Value;
+    }
     private Economic economic; 
     public override void OnStartClient(){
         base.OnStartClient();
@@ -81,12 +91,23 @@ public class PlayerInventory : NetworkBehaviour
         }
         inventoryObjects.Add(new InventoryObject(){item = newItem, amount = 1,itemImage=newItem.itemImage});
     }
+    public void AddManyToInventory(Item newItem, int amount){
+        Debug.Log("ADDDDD");
+        foreach(InventoryObject invObj in inventoryObjects){
+            if(invObj.item == newItem){
+                invObj.amount+= amount;
+                return;
+            }
+        }
+        inventoryObjects.Add(new InventoryObject(){item = newItem, amount = 1,itemImage=newItem.itemImage});
+    }
     public void ToggleInventory(){
         if(inventoryPanel.activeSelf){
             inventoryPanel.transform.GetChild(4).GetComponent<Button>().gameObject.SetActive(false);
             inventoryPanel.SetActive(false);
         }
         else if(!inventoryPanel.activeSelf){
+            SyncInventoryroutine("","","3",PlayerPrefs.GetString("name"));
             UpdateInvUI();
             inventoryPanel.SetActive(true);
         }
@@ -231,6 +252,44 @@ public class PlayerInventory : NetworkBehaviour
             Transform ToolBarHolder = GameObject.FindWithTag("ToolBarHolder").transform;
             Button toolbarButton = ToolBarHolder.GetChild(index).GetComponent<Button>();
             toolbarButton.onClick.Invoke();
+        }
+    }
+    public void SyncInventoryroutine(string item, string value, string mode, string username){
+        StartCoroutine(SyncInventory(item,value,mode,username));
+    }
+    IEnumerator SyncInventory(string item, string value, string mode, string username){
+        WWWForm form = new WWWForm();
+        form.AddField("mode", mode);
+        form.AddField("userName",username);
+        form.AddField("item", item);
+        form.AddField("value",value);
+        using(UnityWebRequest www = UnityWebRequest.Post(InventoryURL,form)){
+            yield return www.SendWebRequest();
+            if(www.result == UnityWebRequest.Result.ConnectionError){
+                Debug.Log(www.error);
+            }
+            else{
+                Debug.Log(www.downloadHandler.text);
+                if(www.responseCode == 200){
+                    var responseData = JsonUtility.FromJson<InventoryData>(www.downloadHandler.text);
+                    Items = responseData.Items.Split(",");
+                    Value = responseData.Value.Split(",");
+                    if(mode == "3"){
+                        Debug.Log("mode 3 "+ Items+" else "+responseData.Items);
+                        for(int i = 0; i<Items.Length;i++){
+                            foreach(Item tempitem in Itemlist){
+                                Debug.Log(tempitem.itemName+ " other "+Items[i]);
+                                if(tempitem.itemName == Items[i]){
+                                    AddManyToInventory(tempitem,int.Parse(Value[i]));
+                                }
+                            }
+                        }
+                    }
+                }
+                else{
+                    Debug.Log("Error"+ www.downloadHandler.text);
+                }
+            }
         }
     }
     [System.Serializable]

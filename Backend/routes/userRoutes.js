@@ -10,6 +10,7 @@ router.route('/register').post(async(req,res)=>{
     const money = 0;
     const user = { email, name, password, money };
     const userFriendList = {'UserName':name,'Friends':[],'Waitlist':[]};
+    const InventoryList = {'UserName':name,'Items':[],'Value':[]};
     if(!name|| !email || !password){
         res.status(400).json({
             message:"Field cannot be empty"
@@ -25,6 +26,7 @@ router.route('/register').post(async(req,res)=>{
         }
         await User.collection.insertOne(user);
         await FriendList.collection.insertOne(userFriendList);
+        await Inventory.collection.insertOne(InventoryList);
         res.status(200).json({message:"User successfully created!"});
     } catch (error) {
         res.status(500).json({error: error});
@@ -165,31 +167,29 @@ router.route("/Inventory").post(async(req,res)=>{
     const userName = req.body.userName;
     const item = req.body.item;
     const value = req.body.value;
-
     try {
         // Find the inventory for the specified user
         const inventory = await Inventory.findOne({ UserName: userName });
-
         switch (Mode) {
-            case 1:
+            case "1":
                 // Check if the item already exists in the array
                 const existingIndex = inventory.Items.findIndex((existingItem) => existingItem === item);
-
-                if (existingIndex !== -1) {
+                if (existingIndex != -1 ) {
                     // Update the value for the existing item
-                    inventory.Value[existingIndex] = value;
+                    await Inventory.updateOne(
+                    { UserName:userName  },
+                    { $set: {Value:`${parseInt(value) +parseInt(inventory.Value[existingIndex])}`} }
+                    );
                 } else {
                     // Add a new item and its value
-                    inventory.Items.push(item);
-                    inventory.Value.push(value);
+                    await Inventory.updateOne({UserName:userName},{$push:{Items:item}})
+                    await Inventory.updateOne({UserName:userName},{$push:{Value:value}})
                 }
-
-                // Save the updated inventory
                 await inventory.save();
                 res.status(200).json({ message: 'Inventory updated successfully' });
                 break;
 
-            case 2:
+            case "2":
                 // Remove the item if it exists
                 const itemIndexToRemove = inventory.Items.findIndex((existingItem) => existingItem === item);
 
@@ -203,10 +203,9 @@ router.route("/Inventory").post(async(req,res)=>{
                 }
                 break;
 
-            case 3:
+            case "3":
                 // Get the current inventory
-                res.status(200).json({ items: inventory.Items, values: inventory.Value });
-                break;
+                return res.status(200).json({ Items: inventory.Items, Value: inventory.Value });
 
             default:
                 res.status(400).json({ error: 'Invalid mode' });
