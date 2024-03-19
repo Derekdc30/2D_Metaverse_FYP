@@ -205,7 +205,7 @@ router.route("/Inventory").post(async(req,res)=>{
 
             case "3":
                 // Get the current inventory
-                return res.status(200).json({ Items: inventory.Items, Value: inventory.Value });
+                return res.status(200).json({ Items: inventory.Items.toString(), Value: inventory.Value.toString() });
 
             default:
                 res.status(400).json({ error: 'Invalid mode' });

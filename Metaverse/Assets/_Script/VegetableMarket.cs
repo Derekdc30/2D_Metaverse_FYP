@@ -18,9 +18,7 @@ public class VegetableMarket : NetworkBehaviour
             return;
         }
 
-        if(VegeUI.activeSelf){
-            ToggleInventory();
-        }
+        VegeUI.SetActive(false);
     }    
 
     public void ToggleInventory(){

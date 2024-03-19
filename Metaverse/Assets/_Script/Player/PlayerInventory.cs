@@ -49,6 +49,7 @@ public class PlayerInventory : NetworkBehaviour
         inventoryPanel.transform.GetChild(4).GetComponent<Button>().gameObject.SetActive(false);
         GameObject.Find("InventoryCanvas/Inventory/Equip").GetComponent<Button>().onClick.AddListener(ToolBar);
         inventoryPanel.SetActive(false);
+        SyncInventoryroutine("","","3",PlayerPrefs.GetString("name"));
     }    
     private void Update()
     {
@@ -95,7 +96,7 @@ public class PlayerInventory : NetworkBehaviour
         Debug.Log("ADDDDD");
         foreach(InventoryObject invObj in inventoryObjects){
             if(invObj.item == newItem){
-                invObj.amount+= amount;
+                invObj.amount= amount;
                 return;
             }
         }
@@ -125,6 +126,7 @@ public class PlayerInventory : NetworkBehaviour
             slotImage.sprite = invObj.item.itemImage;
             itemCountText.text = invObj.amount.ToString();
             obj.GetComponent<Button>().onClick.AddListener(()=>{
+                GameObject.Find("InventoryCanvas/Inventory/Item_Description").SetActive(true);
                 GameObject.Find("InventoryCanvas/Inventory/Item_Description").GetComponent<TextMeshProUGUI>().text = invObj.item.itemName;
                 ActiveEquipButton();
                 SelectInventoryObject(invObj);
@@ -272,6 +274,7 @@ public class PlayerInventory : NetworkBehaviour
                 Debug.Log(www.downloadHandler.text);
                 if(www.responseCode == 200){
                     var responseData = JsonUtility.FromJson<InventoryData>(www.downloadHandler.text);
+                    Debug.Log("split: "+responseData);
                     Items = responseData.Items.Split(",");
                     Value = responseData.Value.Split(",");
                     if(mode == "3"){

@@ -7,7 +7,7 @@ using FishNet.Managing.Logging;
 using FishNet.Managing.Scened;
 using UnityEngine.UI;
 
-public class Arcade : MonoBehaviour
+public class Arcade : NetworkBehaviour
 {    
     public GameObject UI;
     private int _stackedSceneHandle;
@@ -21,11 +21,11 @@ public class Arcade : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        nob = other.GetComponent<NetworkObject>();
+        //nob = other.GetComponent<NetworkObject>();
         if(nob != null){
             ToggleInventory();
         }
-        
+        ToggleInventory();
     }
     /*public override void OnStartClient(){
         base.OnStartClient();
@@ -51,12 +51,14 @@ public class Arcade : MonoBehaviour
     }
     public void To2048(){
         Debug.Log("Before everything");
+        nob = GameObject.FindGameObjectWithTag("Player").GetComponent<NetworkObject>();
         if (!nob.Owner.IsActive) { return; }
         SceneLookupData lookup;
         lookup = new SceneLookupData(_stackedSceneHandle,"2048");
         SceneLoadData sld = new SceneLoadData(lookup);
         sld.Options.AllowStacking = true;
         sld.MovedNetworkObjects = new NetworkObject[] { nob };
+        sld.ReplaceScenes = ReplaceOption.All;
         Debug.Log("Before calling SceneManager.LoadConnectionScenes");
         InstanceFinder.SceneManager.LoadConnectionScenes(nob.Owner, sld);
         Debug.Log("After calling SceneManager.LoadConnectionScenes");

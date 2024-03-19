@@ -161,6 +161,7 @@ public class FriendListManager : NetworkBehaviour
                 Debug.Log(www.downloadHandler.text);
                 if(www.responseCode == 200){
                     var responseData = JsonUtility.FromJson<FriendListData>(www.downloadHandler.text);
+                    Debug.Log("split: "+responseData);
                     FriendList = responseData.FriendList.Split(",");
                     WaitList = responseData.waitlist.Split(",");
                     Array.Sort(FriendList);
