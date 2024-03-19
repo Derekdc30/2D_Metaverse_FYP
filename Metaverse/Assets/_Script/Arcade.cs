@@ -47,7 +47,7 @@ public class Arcade : NetworkBehaviour
     }
     private void OnDestroy()
     {
-        if (InstanceFinder.SceneManager != null) InstanceFinder.SceneManager.OnLoadEnd -= SceneManager_OnLoadEnd;
+        if (base.SceneManager != null) base.SceneManager.OnLoadEnd -= SceneManager_OnLoadEnd;
     }
     public void To2048(){
         Debug.Log("Before everything");
@@ -60,7 +60,7 @@ public class Arcade : NetworkBehaviour
         sld.MovedNetworkObjects = new NetworkObject[] { nob };
         sld.ReplaceScenes = ReplaceOption.All;
         Debug.Log("Before calling SceneManager.LoadConnectionScenes");
-        InstanceFinder.SceneManager.LoadConnectionScenes(nob.Owner, sld);
+        base.SceneManager.LoadConnectionScenes(nob.Owner, sld);
         Debug.Log("After calling SceneManager.LoadConnectionScenes");
     }
     public void UnloadMain(){
@@ -68,7 +68,7 @@ public class Arcade : NetworkBehaviour
             return;
         }
         SceneUnloadData sld = new SceneUnloadData("MainScene");
-        InstanceFinder.SceneManager.UnloadConnectionScenes(nob.Owner, sld);
+        base.SceneManager.UnloadConnectionScenes(nob.Owner, sld);
     }
     public void ToTetris(){
         if(nob != null && nob.Owner.IsActive){
