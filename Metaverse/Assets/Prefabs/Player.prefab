@@ -319,7 +319,6 @@ GameObject:
   - component: {fileID: 225581097264918878}
   - component: {fileID: 354400359281408408}
   - component: {fileID: 5472589069425560738}
-  - component: {fileID: 2329888132541870210}
   - component: {fileID: 6193953080379780930}
   - component: {fileID: 8953216946912055818}
   - component: {fileID: 8792517933385940804}
@@ -441,7 +440,7 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 11
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 83102251
+  _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 7807759643866311769
 --- !u!114 &354400359281408408
@@ -505,18 +504,6 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 225581097264918878}
   _networkObjectCache: {fileID: 225581097264918878}
   moveSpeed: 5
---- !u!114 &2329888132541870210
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7012811820414672308}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0275ce0045adcc54b91a189782e21466, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!95 &6193953080379780930
 Animator:
   serializedVersion: 5
@@ -640,8 +627,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 84dba287f5959354dafb660ab51fb44b, type: 2}
   - {fileID: 11400000, guid: 80b8004b9a5897c49b06c89cb5963a9f, type: 2}
   - {fileID: 11400000, guid: 874f61fd12a5ae844a14cbf5a37ddb37, type: 2}
-  Items: []
-  Value: []
   InventoryURL: http://127.0.0.1:3000/user/Inventory
 --- !u!114 &5480228657709384559
 MonoBehaviour:
