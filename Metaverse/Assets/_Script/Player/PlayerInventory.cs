@@ -83,7 +83,6 @@ public class PlayerInventory : NetworkBehaviour
         ServerManager.Despawn(objToDespawn,DespawnType.Destroy);
     }
     public void AddToInventory(Item newItem){
-        Debug.Log("add");
         foreach(InventoryObject invObj in inventoryObjects){
             if(invObj.item == newItem){
                 invObj.amount++;
@@ -93,7 +92,6 @@ public class PlayerInventory : NetworkBehaviour
         inventoryObjects.Add(new InventoryObject(){item = newItem, amount = 1,itemImage=newItem.itemImage});
     }
     public void AddManyToInventory(Item newItem, int amount){
-        Debug.Log("ADDDDD");
         foreach(InventoryObject invObj in inventoryObjects){
             if(invObj.item == newItem){
                 invObj.amount= amount;
@@ -245,6 +243,9 @@ public class PlayerInventory : NetworkBehaviour
             SelectToolBarItem(newIndex);
         }
     }
+    public List<InventoryObject> getBackpack(){
+        return inventoryObjects;
+    }
 
     void SelectToolBarItem(int index)
     {
@@ -274,14 +275,11 @@ public class PlayerInventory : NetworkBehaviour
                 Debug.Log(www.downloadHandler.text);
                 if(www.responseCode == 200){
                     var responseData = JsonUtility.FromJson<InventoryData>(www.downloadHandler.text);
-                    Debug.Log("split: "+responseData);
                     Items = responseData.Items.Split(",");
                     Value = responseData.Value.Split(",");
                     if(mode == "3"){
-                        Debug.Log("mode 3 "+ Items+" else "+responseData.Items);
                         for(int i = 0; i<Items.Length;i++){
                             foreach(Item tempitem in Itemlist){
-                                Debug.Log(tempitem.itemName+ " other "+Items[i]);
                                 if(tempitem.itemName == Items[i]){
                                     AddManyToInventory(tempitem,int.Parse(Value[i]));
                                 }

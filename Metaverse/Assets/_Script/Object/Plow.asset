@@ -15,3 +15,4 @@ MonoBehaviour:
   itemName: Plow
   prefab: {fileID: 8949096566835860953, guid: 81194d1b5fbd54f4e8dedf1858e5efc7, type: 3}
   itemImage: {fileID: -859339507, guid: 116bbe65f2a3d9847844985d978b2b4f, type: 3}
+  farm: {fileID: 11400000, guid: f41b21352191e96499778e6e32a6f080, type: 2}

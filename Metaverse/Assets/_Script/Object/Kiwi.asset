@@ -15,3 +15,4 @@ MonoBehaviour:
   itemName: Kiwi
   prefab: {fileID: 1228607473190234936, guid: 4d62c566223aa7e419c786a57d61f196, type: 3}
   itemImage: {fileID: 21300000, guid: 1ccaa0420d7914a4f98ff70935d233dc, type: 3}
+  farm: {fileID: 11400000, guid: f41b21352191e96499778e6e32a6f080, type: 2}

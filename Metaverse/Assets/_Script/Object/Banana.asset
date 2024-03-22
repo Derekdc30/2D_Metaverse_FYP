@@ -15,3 +15,4 @@ MonoBehaviour:
   itemName: Banana
   prefab: {fileID: 4454885996888196871, guid: 52ef8483181f0dc4fb975d48ccb035b3, type: 3}
   itemImage: {fileID: 21300000, guid: 10404d5c3bb1f254b88a4397f425e9e7, type: 3}
+  farm: {fileID: 11400000, guid: f41b21352191e96499778e6e32a6f080, type: 2}

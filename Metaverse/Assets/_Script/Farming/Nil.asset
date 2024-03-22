@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d5605b76c6d0e74d8fdd879eb131ef4, type: 3}
+  m_Name: Nil
+  m_EditorClassIdentifier: 
+  itemName: Nil
+  price: 0
+  duration: 0
+  prefab: {fileID: 3756113063326624107, guid: 181a391c32c92b14ca99ae79ad4a0f1c, type: 3}
+  soil: {fileID: 21300000, guid: 89cc97401eb588a408315f5fa0148929, type: 3}
+  stages:
+  - {fileID: 21300000, guid: 89cc97401eb588a408315f5fa0148929, type: 3}
+  - {fileID: 21300000, guid: 89cc97401eb588a408315f5fa0148929, type: 3}
+  - {fileID: 21300000, guid: 89cc97401eb588a408315f5fa0148929, type: 3}
+  - {fileID: 21300000, guid: 89cc97401eb588a408315f5fa0148929, type: 3}
+  - {fileID: 21300000, guid: 89cc97401eb588a408315f5fa0148929, type: 3}

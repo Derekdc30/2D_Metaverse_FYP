@@ -8,4 +8,5 @@ public class Item : ScriptableObject
     public string itemName;
     public GameObject prefab;
     public Sprite itemImage;
+    public FarmingItem farm;
 }
