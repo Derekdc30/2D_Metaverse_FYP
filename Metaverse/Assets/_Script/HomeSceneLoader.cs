@@ -21,14 +21,6 @@ public class HomeSceneLoader : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        NetworkObject nob = other.GetComponent<NetworkObject>();
-        if (nob != null)
-        {
-            LoadScene(nob, false);
-        }
-    }
 
     void LoadScene(NetworkObject nob, bool entering)
     {
