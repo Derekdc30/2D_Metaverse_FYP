@@ -48,6 +48,7 @@ public class FarmManager : NetworkBehaviour
             return;
         } 
     } 
+    
     // Update is called once per frame
     void Update()
     {
@@ -68,55 +69,68 @@ public class FarmManager : NetworkBehaviour
         InitFarming();
     }
     public void AddNewPlant(){
-        InitFarming();
+        //InitFarming();
         GameObject.Find("Farming_UI/Background/SeedListCanvas").SetActive(true);
+        foreach (Transform child in GameObject.FindWithTag("SeedListHolder").transform)        // clear current item
+                Destroy(child.gameObject); 
         foreach(PlayerInventory.InventoryObject item in invetoryobj){
             Debug.Log(item.item.itemName);
             if(item.item.itemName.Contains("Seed")){
                 Transform Holder = GameObject.FindWithTag("SeedListHolder").transform;
                 GameObject obj = Instantiate(SeedListObject, Holder);
-                TextMeshProUGUI[] Texts = obj.GetComponents<TextMeshProUGUI>();
+                TextMeshProUGUI[] Texts = obj.GetComponentsInChildren<TextMeshProUGUI>();
                 Texts[0].text = item.item.itemName;
                 Texts[1].text = item.amount.ToString();
-            }
-        }
-    }
-    public void InitFarming(){
-        for(int i=0; i<5;i++){
-            Debug.Log("Destroy");
-            foreach (Transform child in Pages[i].transform.GetChild(0))
-            {
-                Destroy(child.gameObject);
-            }
-        }
-        
-        int page=0;
-        int slot=1;
-        if(availableSlots==0){
-            Debug.Log("empty");
-            farmingObjects.Add(new FarmingObject(){item=BuyslotIcon,startDate="",stage=0,slotnum=availableSlots+1});
-        }
-        foreach(FarmingObject farmobj in farmingObjects){
-            Debug.Log("Instan");
-            GameObject obj = Instantiate(farmobj.item.prefab,Pages[page].transform.GetChild(0));
-            if(farmobj.item.itemName == "BuySlot"){
                 obj.GetComponent<Button>().onClick.AddListener(()=>{
-                    BuySlot();
+                    AddNewSeed(item);
                 });
             }
-            else if(farmobj.item.itemName == "PlaceHolder")
-            {
-                AddNewPlant();
-            }
-            else{
-                //AddNewPlant(farmobj);
-                Debug.Log("print");
-            }
-            slot+=1;
-            if(slot >= 7){
-                slot=1;
-                page+=1;
-            }
         }
     }
+    public void AddNewSeed(PlayerInventory.InventoryObject item){
+        Debug.Log("Add: "+ item.item.itemName);
+        /*foreach(FarmingObject fobj in farmingObjects){
+            if(fobj.item.itemName.Contains(item.item.itemName)){
+                
+            }
+        }*/
+    }
+    public void InitFarming(){
+    for(int i=0; i<5;i++){
+        Debug.Log("Destroy");
+        foreach (Transform child in Pages[i].transform.GetChild(0))
+        {
+            Destroy(child.gameObject);
+        }
+    }
+    
+    int page=0;
+    int slot=1;
+    if(availableSlots==0){
+        Debug.Log("empty");
+        farmingObjects.Add(new FarmingObject(){item=BuyslotIcon,startDate="",stage=0,slotnum=availableSlots+1});
+    }
+    foreach(FarmingObject farmobj in farmingObjects){
+        FarmingObject currentFarmObj = farmobj; // Create a temporary variable
+        Debug.Log("Instan");
+        GameObject obj = Instantiate(currentFarmObj.item.prefab,Pages[page].transform.GetChild(0));
+        obj.GetComponent<Button>().onClick.AddListener(()=>{
+                if(currentFarmObj.item.itemName == "BuySlot"){
+                    BuySlot();
+                }
+                else if(currentFarmObj.item.itemName == "PlaceHolder")
+                {
+                    AddNewPlant();
+                }
+                else{
+                    Debug.Log("print");
+                }
+            });
+        slot+=1;
+        if(slot >= 7){
+            slot=1;
+            page+=1;
+        }
+    }
+}
 }

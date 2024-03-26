@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d5605b76c6d0e74d8fdd879eb131ef4, type: 3}
+  m_Name: Lettuce_Seed
+  m_EditorClassIdentifier: 
+  itemName: Lettuce_Seed
+  price: 10
+  duration: 5
+  prefab: {fileID: 6316250245516951609, guid: 1b0eebc9162a30144a0acbb5e07f646f, type: 3}
+  soil: {fileID: 1235705905, guid: 0ed11b32eeaf36b40b4f6f7ecc3dde11, type: 3}
+  stages:
+  - {fileID: -1239940091, guid: 0ed11b32eeaf36b40b4f6f7ecc3dde11, type: 3}
+  - {fileID: -2107722303, guid: 0ed11b32eeaf36b40b4f6f7ecc3dde11, type: 3}
+  - {fileID: -1368528352, guid: 0ed11b32eeaf36b40b4f6f7ecc3dde11, type: 3}
+  - {fileID: 338717340, guid: 0ed11b32eeaf36b40b4f6f7ecc3dde11, type: 3}
+  - {fileID: -1384237748, guid: 0ed11b32eeaf36b40b4f6f7ecc3dde11, type: 3}

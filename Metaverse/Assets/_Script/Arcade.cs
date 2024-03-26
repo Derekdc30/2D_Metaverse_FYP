@@ -25,7 +25,7 @@ public class Arcade : NetworkBehaviour
         if(nob != null){
             ToggleInventory();
         }
-        ToggleInventory();
+        //ToggleInventory();
     }
     /*public override void OnStartClient(){
         base.OnStartClient();
