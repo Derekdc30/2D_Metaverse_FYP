@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Broccoli_Seed
   m_EditorClassIdentifier: 
   itemName: Broccoli Seed
-  prefab: {fileID: 8731324359051100714, guid: 00f9c45bc1b0a924dbace894afa82f69, type: 3}
+  prefab: {fileID: 6625771187277449778, guid: 205e25b20375315458d2bb712ff04c16, type: 3}
   itemImage: {fileID: 1880458467, guid: 0ed11b32eeaf36b40b4f6f7ecc3dde11, type: 3}
+  farm: {fileID: 11400000, guid: 51e40aa910637bd4e88cbeb81c462876, type: 2}

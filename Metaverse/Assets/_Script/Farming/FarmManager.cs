@@ -22,7 +22,8 @@ public class FarmManager : NetworkBehaviour
     public FarmingItem PlaceHolder;
     public GameObject SeedListObject;
     public GameObject[] Pages = new GameObject[5];
-    public List<PlayerInventory.InventoryObject> invetoryobj = new List<PlayerInventory.InventoryObject>();
+    public List<FarmingItem> SeedDB = new List<FarmingItem>();
+    private List<PlayerInventory.InventoryObject> invetoryobj;
     public List<FarmingObject> farmingObjects = new List<FarmingObject>();
     [System.Serializable]
     public class FarmingObject{
@@ -68,13 +69,11 @@ public class FarmManager : NetworkBehaviour
         availableSlots+=1;
         InitFarming();
     }
-    public void AddNewPlant(){
-        //InitFarming();
+    public void AddNewPlant(FarmingObject farmobj){
         GameObject.Find("Farming_UI/Background/SeedListCanvas").SetActive(true);
         foreach (Transform child in GameObject.FindWithTag("SeedListHolder").transform)        // clear current item
                 Destroy(child.gameObject); 
-        foreach(PlayerInventory.InventoryObject item in invetoryobj){
-            
+        foreach(PlayerInventory.InventoryObject item in invetoryobj){   
             if(item.item.itemName.Contains("Seed")){
                 Transform Holder = GameObject.FindWithTag("SeedListHolder").transform;
                 GameObject obj = Instantiate(SeedListObject, Holder);
@@ -82,17 +81,26 @@ public class FarmManager : NetworkBehaviour
                 Texts[0].text = item.item.itemName;
                 Texts[1].text = item.amount.ToString();
                 obj.GetComponent<Button>().onClick.AddListener(()=>{
-                    AddNewSeed(item);
+                    AddNewSeed(farmobj,item);
+                    GameObject.Find("Farming_UI/Background/SeedListCanvas").SetActive(false);
                 });
             }
         }
     }
-    public void AddNewSeed(PlayerInventory.InventoryObject item){
-        /*foreach(FarmingObject fobj in farmingObjects){
-            if(fobj.item.itemName.Contains(item.item.itemName)){
-                
+    public void AddNewSeed(FarmingObject obj, PlayerInventory.InventoryObject item){
+        foreach(FarmingObject fobj in farmingObjects){
+            if(fobj.slotnum ==obj.slotnum){
+                fobj.item.itemName = item.item.itemName;
+                foreach(FarmingItem DB in SeedDB){
+                    if(fobj.item.itemName == DB.itemName){
+                        fobj.item = DB;
+                    }
+                }
+                fobj.stage = 1;
             }
-        }*/
+            Debug.Log(fobj.item.itemName);
+        }
+        InitFarming();
     }
     public void InitFarming(){
     for(int i=0; i<5;i++){
@@ -110,20 +118,24 @@ public class FarmManager : NetworkBehaviour
     foreach(FarmingObject farmobj in farmingObjects){
         FarmingObject currentFarmObj = farmobj; // Create a temporary variable
         GameObject obj = Instantiate(currentFarmObj.item.prefab,Pages[page].transform.GetChild(0));
+        if(farmobj.item.itemName.Contains("Seed")){
+            TextMeshProUGUI Texts = obj.GetComponentInChildren<TextMeshProUGUI>();
+            Texts.text = farmobj.item.itemName;
+            Image slotImage = obj.GetComponent<Image>();
+            slotImage.sprite = farmobj.item.stages[0];
+        }
+        
         obj.GetComponent<Button>().onClick.RemoveAllListeners();
         obj.GetComponent<Button>().onClick.AddListener(()=>{
             if(currentFarmObj.item.itemName == "BuySlot"){
-                Debug.Log("buy slot: "+ currentFarmObj.slotnum);
                 BuySlot();
             }
             else if(currentFarmObj.item.itemName == "PlaceHolder")
             {
-                //AddNewPlant();
-                Debug.Log("place slot: "+ currentFarmObj.slotnum);
+                AddNewPlant(farmobj);
             }
-            else{
+            else if(currentFarmObj.item.itemName == "Seed"){
                 Debug.Log("print");
-                Debug.Log("else slot: "+ currentFarmObj.slotnum);
             }
         });
         slot+=1;

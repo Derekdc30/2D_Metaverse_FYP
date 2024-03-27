@@ -820,8 +820,9 @@ MonoBehaviour:
   - {fileID: 614538357}
   - {fileID: 954300306}
   - {fileID: 848765751}
-  invetoryobj: []
-  farmingObjects: []
+  SeedDB:
+  - {fileID: 11400000, guid: 51e40aa910637bd4e88cbeb81c462876, type: 2}
+  - {fileID: 11400000, guid: e8db295962d664846a754c79bcf446bd, type: 2}
   UI: {fileID: 412873890}
 --- !u!114 &412873895
 MonoBehaviour:

@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Lettuce_Seed
   m_EditorClassIdentifier: 
   itemName: Lettuce Seed
-  prefab: {fileID: 6316250245516951609, guid: 1b0eebc9162a30144a0acbb5e07f646f, type: 3}
+  prefab: {fileID: 6625771187277449778, guid: 0af586964942cc14cb6e105811cdad6b, type: 3}
   itemImage: {fileID: -1384237748, guid: 0ed11b32eeaf36b40b4f6f7ecc3dde11, type: 3}
+  farm: {fileID: 11400000, guid: e8db295962d664846a754c79bcf446bd, type: 2}
