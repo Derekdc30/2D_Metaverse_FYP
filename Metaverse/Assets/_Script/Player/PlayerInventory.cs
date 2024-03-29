@@ -100,6 +100,18 @@ public class PlayerInventory : NetworkBehaviour
         }
         inventoryObjects.Add(new InventoryObject(){item = newItem, amount = 1,itemImage=newItem.itemImage});
     }
+    public void RemoveOne(Item item){
+        foreach(InventoryObject invObj in inventoryObjects){
+            if(invObj.item == item){
+                invObj.amount--;
+                return;
+            }
+            if(invObj.amount <=0){
+                inventoryObjects.Remove(invObj);
+                return;
+            }
+        }
+    }
     public void ToggleInventory(){
         if(inventoryPanel.activeSelf){
             inventoryPanel.transform.GetChild(4).GetComponent<Button>().gameObject.SetActive(false);

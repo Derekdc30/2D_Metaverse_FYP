@@ -2,6 +2,8 @@ const router = require('express').Router()
 const User = require('../Models/User')
 const FriendList = require('../Models/Friendlist');
 const Inventory = require('../Models/Inventory');
+const Farming = require('../Models/Inventory');
+
 
 router.route('/register').post(async(req,res)=>{
     const name = req.body.name;
@@ -11,6 +13,7 @@ router.route('/register').post(async(req,res)=>{
     const user = { email, name, password, money };
     const userFriendList = {'UserName':name,'Friends':[],'Waitlist':[]};
     const InventoryList = {'UserName':name,'Items':[],'Value':[]};
+    const FarmingList = {'UserName':name, 'availavle':0, "farmingObjects":[]};
     if(!name|| !email || !password){
         res.status(400).json({
             message:"Field cannot be empty"
@@ -27,6 +30,7 @@ router.route('/register').post(async(req,res)=>{
         await User.collection.insertOne(user);
         await FriendList.collection.insertOne(userFriendList);
         await Inventory.collection.insertOne(InventoryList);
+        await Farming.collection.insertOne(FarmingList);
         res.status(200).json({message:"User successfully created!"});
     } catch (error) {
         res.status(500).json({error: error});
@@ -162,42 +166,48 @@ router.route('/Money').post(async(req,res)=>{
 2 -> remove 
 3 -> get
 */
-router.route("/Inventory").post(async(req,res)=>{
+router.route("/Inventory").post(async (req, res) => {
     const Mode = req.body.mode;
     const userName = req.body.userName;
     const item = req.body.item;
     const value = req.body.value;
+
     try {
         // Find the inventory for the specified user
         const inventory = await Inventory.findOne({ UserName: userName });
+
         switch (Mode) {
             case "1":
                 // Check if the item already exists in the array
                 const existingIndex = inventory.Items.findIndex((existingItem) => existingItem === item);
-                if (existingIndex != -1 ) {
+
+                if (existingIndex !== -1) {
                     // Update the value for the existing item
-                    await Inventory.updateOne(
-                    { UserName:userName  },
-                    { $set: {Value:`${parseInt(value) +parseInt(inventory.Value[existingIndex])}`} }
-                    );
+                    inventory.Value[existingIndex] = parseInt(inventory.Value[existingIndex]) + parseInt(value);
                 } else {
                     // Add a new item and its value
-                    await Inventory.updateOne({UserName:userName},{$push:{Items:item}})
-                    await Inventory.updateOne({UserName:userName},{$push:{Value:value}})
+                    inventory.Items.push(item);
+                    inventory.Value.push(value);
                 }
+
                 await inventory.save();
                 res.status(200).json({ message: 'Inventory updated successfully' });
                 break;
 
             case "2":
-                // Remove the item if it exists
+                // Reduce the item quantity or remove if value reaches 0
                 const itemIndexToRemove = inventory.Items.findIndex((existingItem) => existingItem === item);
 
                 if (itemIndexToRemove !== -1) {
-                    inventory.Items.splice(itemIndexToRemove, 1);
-                    inventory.Value.splice(itemIndexToRemove, 1);
+                    inventory.Value[itemIndexToRemove] -= value;
+
+                    if (inventory.Value[itemIndexToRemove] <= 0) {
+                        // Remove the item and its value if value reaches 0 or less
+                        inventory.Items.splice(itemIndexToRemove, 1);
+                        inventory.Value.splice(itemIndexToRemove, 1);
+                    }
                     await inventory.save();
-                    res.status(200).json({ message: 'Item removed from inventory' });
+                    res.status(200).json({ message: 'Item quantity updated in inventory' });
                 } else {
                     res.status(404).json({ error: 'Item not found in inventory' });
                 }
@@ -214,7 +224,11 @@ router.route("/Inventory").post(async(req,res)=>{
         console.error('Error updating inventory:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
-})
+});
+
+router.route("/Farming").post(async (req, res) => {
+   
+});
 
 router.route('')
 module.exports = router

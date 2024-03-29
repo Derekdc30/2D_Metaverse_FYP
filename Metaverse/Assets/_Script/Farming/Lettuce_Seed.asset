@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d5605b76c6d0e74d8fdd879eb131ef4, type: 3}
   m_Name: Lettuce_Seed
   m_EditorClassIdentifier: 
-  itemName: Lettuce_Seed
+  itemName: Lettuce Seed
   price: 10
   duration: 5
   prefab: {fileID: 6625771187277449778, guid: 0af586964942cc14cb6e105811cdad6b, type: 3}
