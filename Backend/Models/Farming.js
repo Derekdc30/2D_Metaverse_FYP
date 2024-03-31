@@ -3,7 +3,7 @@ const {Schema} = mongoose
 
 const FarmingObjectSchema = new Schema({
     item: {
-        type: FarmingItemSchema, // Reference to the FarmingItem schema
+        type: String, 
         required: true
     },
     startDate: {
@@ -21,7 +21,7 @@ const FarmingObjectSchema = new Schema({
 
 const FarmingSchema = new Schema(
     {
-        userName: {
+        UserName: {
             type: String,
             required: true,
             unique: true // Ensure unique usernames

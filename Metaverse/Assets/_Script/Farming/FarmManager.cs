@@ -10,8 +10,10 @@ using UnityEngine.UI;
 using FishNet;
 using FishNet.Object;
 
+
 public class FarmManager : NetworkBehaviour
 {
+    [SerializeField] private string FarmingURL = "http://127.0.0.1:3000/user/Farming";
     private int availableSlots = 0;
     public const int totalPages = 5;
     public const int slotsPerPage = 6;
@@ -33,6 +35,49 @@ public class FarmManager : NetworkBehaviour
         public DateTime startDate;
         public int stage;
         public int slotnum;
+    }
+    [System.Serializable]
+    public class FarmingData
+    {
+        public string UserName;
+        public int available;
+        public FarmingObjectData[] farmingObjects;
+    }
+    [System.Serializable]
+    public class FarmingObjectData
+    {
+        public string item;
+        public string startDate;
+        public int stage;
+        public int slotnum;
+    }
+    public static class JsonHelper
+    {
+        public static T[] FromJson<T>(string json)
+        {
+            Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(json);
+            return wrapper.Items;
+        }
+
+        public static string ToJson<T>(T[] array)
+        {
+            Wrapper<T> wrapper = new Wrapper<T>();
+            wrapper.Items = array;
+            return JsonUtility.ToJson(wrapper);
+        }
+
+        public static string ToJson<T>(T[] array, bool prettyPrint)
+        {
+            Wrapper<T> wrapper = new Wrapper<T>();
+            wrapper.Items = array;
+            return JsonUtility.ToJson(wrapper, prettyPrint);
+        }
+
+        [Serializable]
+        private class Wrapper<T>
+        {
+            public T[] Items;
+        }
     }
     public GameObject UI;
     private bool hasRunFunction = false;
@@ -58,7 +103,8 @@ public class FarmManager : NetworkBehaviour
     {
         if (UI.activeSelf && !hasRunFunction)
         {
-            InitFarming();
+            StartCoroutine(FarmingHandler(UserName:PlayerPrefs.GetString("name"),mode:"1",available:0,item:"",startDate:"",stage:0,slotnum:0));
+            //InitFarming();
             hasRunFunction = true;
         }
         else if(!UI.activeSelf){
@@ -97,7 +143,7 @@ public class FarmManager : NetworkBehaviour
                     GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
                     PlayerInventory playerInventory = playerObject.GetComponent<PlayerInventory>();
                     playerInventory.RemoveOne(item.item);
-                     playerInventory.SyncInventoryroutine(item.itemName.ToString(),"1","2",PlayerPrefs.GetString("name"));
+                    playerInventory.SyncInventoryroutine(item.item.itemName.ToString(),"1","2",PlayerPrefs.GetString("name"));
                     AddNewSeed(farmobj,item);
                     GameObject.Find("Farming_UI/Background/SeedListCanvas").SetActive(false);
                 });
@@ -184,6 +230,7 @@ public class FarmManager : NetworkBehaviour
                 DateTime harvestTime = fobj.startDate + growthDuration;
                 if (currentTime >= harvestTime)
                 {
+                    fobj.stage=4;
                     Debug.Log("Seed is ready to harvest!");
                 }
                 else
@@ -208,7 +255,7 @@ public class FarmManager : NetworkBehaviour
                     texts.text = "You earn $" + fobj.item.price+" from "+words[0];
                     GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
                     Economic economic = playerObject.GetComponent<Economic>();
-                    economic.SyncMoneyroutine(fobj.item.price,"1",PlayerPrefs.GetString("name"));
+                    economic.SyncMoneyroutine(fobj.item.price.ToString(),"1",PlayerPrefs.GetString("name"));
                 }
             }
             foreach(FarmingObject obj in farmingObjects){
@@ -222,5 +269,61 @@ public class FarmManager : NetworkBehaviour
             return;
         }
         InitFarming();
+    }
+    public void syncFarming(){
+        foreach(FarmingObject fobj in farmingObjects){
+            StartCoroutine(FarmingHandler(UserName:PlayerPrefs.GetString("name"),mode:"0",available:availableSlots,item:fobj.item.itemName,startDate:fobj.startDate.ToString(),stage:fobj.stage,slotnum:fobj.slotnum));
+        }
+    }
+    IEnumerator FarmingHandler (string UserName, string mode, int available, string item, string startDate, int stage, int slotnum){
+        WWWForm form = new WWWForm();
+        form.AddField("UserName",UserName);
+        form.AddField("mode",mode);
+        form.AddField("available",available);
+        form.AddField("item",item);
+        form.AddField("startDate",startDate);
+        form.AddField("stage",stage);
+        form.AddField("slotnum",slotnum);
+        using(UnityWebRequest www = UnityWebRequest.Post(FarmingURL, form)){
+            yield return www.SendWebRequest();
+            if(www.result == UnityWebRequest.Result.ConnectionError){
+                Debug.Log(www.error);
+            }
+            else
+            {
+                if (www.responseCode == 200) // Check if the request was successful
+                {
+                    string jsonResponse = www.downloadHandler.text;
+                    Debug.Log("Received JSON response: " + jsonResponse);
+                    FarmingData farmingData = JsonUtility.FromJson<FarmingData>(jsonResponse);
+                    availableSlots = farmingData.available;
+                    if(availableSlots>0){
+                        farmingObjects = new List<FarmingObject>();
+                        foreach(FarmingObjectData data in farmingData.farmingObjects){
+                            if(data.item == "PlaceHolder"){
+                                farmingObjects.Add(new FarmingObject(){item=PlaceHolder,startDate=DateTime.MinValue,stage=0,slotnum=data.slotnum});
+                            }else if(data.item == "BuySlot"){
+                                farmingObjects.Add(new FarmingObject(){item=BuyslotIcon,startDate=DateTime.MinValue,stage=0,slotnum=data.slotnum});
+                            }else if(data.item.Contains("Seed")){
+                                foreach(FarmingItem seed in SeedDB){
+                                    if(seed.itemName == data.item){
+                                        DateTime temp;
+                                        DateTime.TryParse(data.startDate, out temp);
+                                        farmingObjects.Add(new FarmingObject(){item = seed, startDate = temp, stage = data.stage, slotnum = data.slotnum});
+                                    }
+                                }
+                            }   
+                        }
+                    }
+                    InitFarming();
+                    CheckHarvestStatus();
+                    StartGrowing();
+                }
+                else
+                {
+                    Debug.Log("Error " + www.responseCode + ": " + www.downloadHandler.text);
+                }
+            }
+        }
     }
 }

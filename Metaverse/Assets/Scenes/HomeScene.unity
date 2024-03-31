@@ -135,7 +135,8 @@ GameObject:
   - component: {fileID: 16636644}
   - component: {fileID: 16636643}
   - component: {fileID: 16636642}
-  - component: {fileID: 16636646}
+  - component: {fileID: 16636647}
+  - component: {fileID: 16636648}
   m_Layer: 5
   m_Name: Farming_UI
   m_TagString: Untagged
@@ -226,7 +227,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &16636646
+--- !u!114 &16636647
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -235,6 +236,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 16636641}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3e576bf8e614dc42875d57951930a77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 0
+  _addedNetworkObject: {fileID: 16636648}
+  _networkObjectCache: {fileID: 16636648}
+  FarmingURL: http://127.0.0.1:3000/user/Farming
+  BuyslotIcon: {fileID: 11400000, guid: 70d1085b29c6a944c9a71a47ee008188, type: 2}
+  PlaceHolder: {fileID: 11400000, guid: 1fbf6e763e86280408ab7eb1003f5f84, type: 2}
+  SeedListObject: {fileID: 5967897335825965853, guid: d6b0cea4a284c784b9e05337f8197a3e, type: 3}
+  MessageBox: {fileID: 1629861269}
+  Pages:
+  - {fileID: 118659130}
+  - {fileID: 1600960691}
+  - {fileID: 614538357}
+  - {fileID: 954300306}
+  - {fileID: 848765751}
+  SeedDB:
+  - {fileID: 11400000, guid: 51e40aa910637bd4e88cbeb81c462876, type: 2}
+  - {fileID: 11400000, guid: e8db295962d664846a754c79bcf446bd, type: 2}
+  ItemDB:
+  - {fileID: 11400000, guid: a7a4f61004be3e9408802e7ffc9e09a0, type: 2}
+  - {fileID: 11400000, guid: 80b8004b9a5897c49b06c89cb5963a9f, type: 2}
+  farmingObjects: []
+  UI: {fileID: 412873890}
+--- !u!114 &16636648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 16636641}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -242,15 +277,15 @@ MonoBehaviour:
   <ComponentIndex>k__BackingField: 0
   <PredictedSpawn>k__BackingField: {fileID: 0}
   _networkBehaviours:
+  - {fileID: 16636647}
   - {fileID: 1950746606}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
-  <ChildNetworkObjects>k__BackingField:
-  - {fileID: 412873895}
+  <ChildNetworkObjects>k__BackingField: []
   SerializedTransformProperties:
     Position: {x: 960, y: 540, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
     LocalScale: {x: 1, y: 1, z: 1}
-  _isNetworked: 1
+  _isNetworked: 0
   _isGlobal: 0
   _initializeOrder: 0
   _defaultDespawnType: 0
@@ -258,7 +293,7 @@ MonoBehaviour:
   <PrefabId>k__BackingField: 0
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 1272697013
-  <SceneId>k__BackingField: 5466192051179936561
+  <SceneId>k__BackingField: 5466192048956472041
   <AssetPathHash>k__BackingField: 0
 --- !u!1 &63531876
 GameObject:
@@ -860,8 +895,6 @@ GameObject:
   - component: {fileID: 412873891}
   - component: {fileID: 412873893}
   - component: {fileID: 412873892}
-  - component: {fileID: 412873894}
-  - component: {fileID: 412873895}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -932,72 +965,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 412873890}
   m_CullTransparentMesh: 1
---- !u!114 &412873894
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 412873890}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3e576bf8e614dc42875d57951930a77, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 0
-  _addedNetworkObject: {fileID: 412873895}
-  _networkObjectCache: {fileID: 412873895}
-  BuyslotIcon: {fileID: 11400000, guid: 70d1085b29c6a944c9a71a47ee008188, type: 2}
-  PlaceHolder: {fileID: 11400000, guid: 1fbf6e763e86280408ab7eb1003f5f84, type: 2}
-  SeedListObject: {fileID: 5967897335825965853, guid: d6b0cea4a284c784b9e05337f8197a3e, type: 3}
-  MessageBox: {fileID: 1629861269}
-  Pages:
-  - {fileID: 118659130}
-  - {fileID: 1600960691}
-  - {fileID: 614538357}
-  - {fileID: 954300306}
-  - {fileID: 848765751}
-  SeedDB:
-  - {fileID: 11400000, guid: 51e40aa910637bd4e88cbeb81c462876, type: 2}
-  - {fileID: 11400000, guid: e8db295962d664846a754c79bcf446bd, type: 2}
-  ItemDB:
-  - {fileID: 11400000, guid: a7a4f61004be3e9408802e7ffc9e09a0, type: 2}
-  - {fileID: 11400000, guid: 80b8004b9a5897c49b06c89cb5963a9f, type: 2}
-  farmingObjects: []
-  UI: {fileID: 412873890}
---- !u!114 &412873895
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 412873890}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <IsNested>k__BackingField: 1
-  <ComponentIndex>k__BackingField: 1
-  <PredictedSpawn>k__BackingField: {fileID: 0}
-  _networkBehaviours:
-  - {fileID: 412873894}
-  <ParentNetworkObject>k__BackingField: {fileID: 16636646}
-  <ChildNetworkObjects>k__BackingField: []
-  SerializedTransformProperties:
-    Position: {x: 0, y: 60.79, z: 0}
-    Rotation: {x: -0, y: -0, z: -0, w: 1}
-    LocalScale: {x: 3, y: 2.3, z: 1}
-  _isNetworked: 1
-  _isGlobal: 0
-  _initializeOrder: 0
-  _defaultDespawnType: 0
-  NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: 0
-  <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 1272697013
-  <SceneId>k__BackingField: 5466192051079126959
-  <AssetPathHash>k__BackingField: 0
 --- !u!1 &444602737
 GameObject:
   m_ObjectHideFlags: 0
@@ -1085,6 +1052,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 16636647}
+        m_TargetAssemblyTypeName: FarmManager, Assembly-CSharp
+        m_MethodName: syncFarming
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -88311,9 +88290,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e93766dab06e30040b4b78c11807cb59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 0
-  _addedNetworkObject: {fileID: 16636646}
-  _networkObjectCache: {fileID: 16636646}
+  _componentIndexCache: 1
+  _addedNetworkObject: {fileID: 16636648}
+  _networkObjectCache: {fileID: 16636648}
   UI: {fileID: 412873890}
 --- !u!1 &2124674199
 GameObject:

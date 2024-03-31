@@ -2,7 +2,7 @@ const router = require('express').Router()
 const User = require('../Models/User')
 const FriendList = require('../Models/Friendlist');
 const Inventory = require('../Models/Inventory');
-const Farming = require('../Models/Inventory');
+const Farming = require('../Models/Farming');
 
 
 router.route('/register').post(async(req,res)=>{
@@ -148,11 +148,11 @@ router.route('/Money').post(async(req,res)=>{
         switch(Mode){
             case "1":
                 await User.updateOne({name:userName},
-                    {$set:{money: user.money+value}});
+                    {$set:{money: user.money+Number(value)}});
                 return res.status(200).json({message:"add"});
             case "2":
                 await User.updateOne({name:userName},
-                    {$set:{money: user.money-value}});
+                    {$set:{money: user.money-Number(value)}});
                     return res.status(200).json({message:"minus"});
             case "3":
                 return res.status(200).json({name:userName, money:user.money});
@@ -227,7 +227,72 @@ router.route("/Inventory").post(async (req, res) => {
 });
 
 router.route("/Farming").post(async (req, res) => {
-   
+   const UserName = req.body.UserName;
+   const mode = req.body.mode;
+   const available = req.body.available;
+   const item = req.body.item;
+   const startDate = req.body.startDate;
+   const stage = req.body.stage;
+   const slotnum = req.body.slotnum;
+   try {
+    farming = await Farming.findOne({ UserName: UserName });
+    switch (mode) {
+        case "0":
+            // Sync farming object to the database
+            if (!farming) {
+                farming = new Farming({
+                    UserName: UserName,
+                    available: available,
+                    farmingObjects: [{ item, startDate, stage, slotnum }]
+                });
+            } else {
+                let existingObjectIndex = -1;
+                    for (let i = 0; i < farming.farmingObjects.length; i++) {
+                        if (farming.farmingObjects[i].slotnum == slotnum) {
+                            existingObjectIndex = i;
+                            break;
+                        }
+                    }
+                    console.log(existingObjectIndex)
+
+                    if (existingObjectIndex !== -1) {
+                        // If slotnum exists, update the content
+                        farming.farmingObjects[existingObjectIndex].item = item;
+                        farming.farmingObjects[existingObjectIndex].startDate = startDate;
+                        farming.farmingObjects[existingObjectIndex].stage = stage;
+                    } else {
+                        // If slotnum doesn't exist, add new farming object
+                        farming.farmingObjects.push({ item, startDate, stage, slotnum });
+                    }
+
+                    farming.available = available; // Update available value
+                }
+
+                await farming.save();
+                res.status(200).json({ message: 'Farming object synchronized successfully' });
+                break;
+
+        case "1":
+            // Get farming objects from the database
+            if (!farming) {
+                res.status(404).json({ error: 'Farming data not found' });
+            } else {
+                res.status(200).json({
+                    UserName: farming.UserName,
+                    available: farming.available,
+                    farmingObjects: farming.farmingObjects
+                });
+            }
+            break;
+
+        default:
+            res.status(400).json({ error: 'Invalid mode' });
+            break;
+    }
+   } catch (error) {
+        console.error('Error handling farming request:', error);
+        res.status(500).json({ error: 'Internal server error' });
+   }
 });
 
 router.route('')

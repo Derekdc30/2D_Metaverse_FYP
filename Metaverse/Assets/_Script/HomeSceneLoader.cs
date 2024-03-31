@@ -36,7 +36,6 @@ public class HomeSceneLoader : MonoBehaviour
             SceneLoadData sld = new SceneLoadData(lookup);
             sld.Options.AllowStacking = true;
             sld.MovedNetworkObjects = new NetworkObject[] { nob };
-            sld.ReplaceScenes = ReplaceOption.All;
             InstanceFinder.SceneManager.LoadConnectionScenes(nob.Owner, sld);
             
         }
@@ -51,7 +50,6 @@ public class HomeSceneLoader : MonoBehaviour
             SceneLoadData sld = new SceneLoadData(lookup);
             sld.Options.AllowStacking = true;
             sld.MovedNetworkObjects = new NetworkObject[] { nob };
-            sld.ReplaceScenes = ReplaceOption.All;
             sld.Options.AutomaticallyUnload = false;
             InstanceFinder.SceneManager.LoadGlobalScenes( sld);
         }
