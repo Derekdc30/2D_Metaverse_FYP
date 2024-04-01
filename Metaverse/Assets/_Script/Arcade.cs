@@ -21,22 +21,23 @@ public class Arcade : NetworkBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        //nob = other.GetComponent<NetworkObject>();
+        nob = other.GetComponent<NetworkObject>();
         if(nob != null){
             ToggleInventory();
         }
         //ToggleInventory();
     }
-    /*public override void OnStartClient(){
+    public override void OnStartClient(){
         base.OnStartClient();
         if(!base.IsOwner){
             enabled = false;
             return;
         }
+        if (!IsServer) return;
         if(UI.activeSelf){
             ToggleInventory();
         }
-    }   */
+    }  
     public void ToggleInventory(){
         if(UI.activeSelf){
             UI.SetActive(false);
