@@ -25,38 +25,30 @@ public class HomeSceneLoader : MonoBehaviour
     void LoadScene(NetworkObject nob, bool entering)
     {
         if (!nob.Owner.IsActive) { return; }
-
         SceneLookupData lookup;
-        if (this.tag == "TP_Home")
-        {
-            if (entering){
-                InstanceFinder.SceneManager.UnloadConnectionScenes(nob.Owner, new SceneUnloadData(new SceneLookupData(_stackedSceneHandle, "MainScene")));
-            }
-            lookup = new SceneLookupData(_stackedSceneHandle, "HomeScene");
-            SceneLoadData sld = new SceneLoadData(lookup);
-            sld.Options.AllowStacking = true;
-            sld.MovedNetworkObjects = new NetworkObject[] { nob };
-            InstanceFinder.SceneManager.LoadConnectionScenes(nob.Owner, sld);
-            
+        if(this.tag == "TP_Home" ){
+            lookup = new SceneLookupData(_stackedSceneHandle,"HomeScene");
         }
-        else if (this.tag == "TP_Main")
-        {
-            if (entering)
-            {
-                // Unload the home scene when the player enters it.
-                InstanceFinder.SceneManager.UnloadConnectionScenes(nob.Owner, new SceneUnloadData(new SceneLookupData(_stackedSceneHandle, "HomeScene")));
-            }
-            lookup = new SceneLookupData(_stackedSceneHandle, "MainScene");
-            SceneLoadData sld = new SceneLoadData(lookup);
-            sld.Options.AllowStacking = true;
-            sld.MovedNetworkObjects = new NetworkObject[] { nob };
-            sld.Options.AutomaticallyUnload = false;
-            InstanceFinder.SceneManager.LoadGlobalScenes( sld);
+        else if(this.tag == "TP_Main"){
+            lookup = new SceneLookupData(_stackedSceneHandle,"MainScene");
         }
-        else
-        {
-            lookup = new SceneLookupData(_stackedSceneHandle, "MainScene");
+        else if(this.tag == "TP_Arcade"){
+            lookup = new SceneLookupData(_stackedSceneHandle,"Arcade");
         }
+        else if(this.tag == "TP_2048"){
+            lookup = new SceneLookupData(_stackedSceneHandle,"2048");
+        }
+        else if(this.tag == "TP_Tetris"){
+            lookup = new SceneLookupData(_stackedSceneHandle,"Tetris");
+        }
+        else{
+            lookup = new SceneLookupData(_stackedSceneHandle,"MainScene");
+        }
+        SceneLoadData sld =  new SceneLoadData(lookup);
+        sld.Options.AllowStacking = true;
+        sld.MovedNetworkObjects = new NetworkObject[] {nob};
+        sld.ReplaceScenes = ReplaceOption.All;
+        InstanceFinder.SceneManager.LoadConnectionScenes(nob.Owner,sld);
 
         
     }
