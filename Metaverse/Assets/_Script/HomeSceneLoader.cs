@@ -6,6 +6,7 @@ using FishNet.Object;
 using FishNet.Managing.Logging;
 using FishNet.Managing.Scened;
 using UnityEngine.UI;
+using TMPro;
 
 public class HomeSceneLoader : MonoBehaviour
 {
@@ -37,9 +38,19 @@ public class HomeSceneLoader : MonoBehaviour
         }
         else if(this.tag == "TP_2048"){
             lookup = new SceneLookupData(_stackedSceneHandle,"2048");
+            GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+            Economic economic = playerObject.GetComponent<Economic>();
+            if(int.Parse(GameObject.FindWithTag("MoneyText").GetComponent<TextMeshProUGUI>().text.Substring(1))>= 5){
+                economic.SyncMoneyroutine("5","2",PlayerPrefs.GetString("name"));
+            }
         }
         else if(this.tag == "TP_Tetris"){
             lookup = new SceneLookupData(_stackedSceneHandle,"Tetris");
+            GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+            Economic economic = playerObject.GetComponent<Economic>();
+            if(int.Parse(GameObject.FindWithTag("MoneyText").GetComponent<TextMeshProUGUI>().text.Substring(1))>= 5){
+                economic.SyncMoneyroutine("5","2",PlayerPrefs.GetString("name"));
+            }
         }
         else{
             lookup = new SceneLookupData(_stackedSceneHandle,"MainScene");

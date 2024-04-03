@@ -13,12 +13,16 @@ public class Board : MonoBehaviour
 {
     public Tilemap tilemap { get; private set; }
     public Piece activePiece { get; private set; }
-
+    [SerializeField] private CanvasGroup gameOver;
     public TetrominoData[] tetrominoes;
     public Vector2Int boardSize = new Vector2Int(10, 20);
     public Vector3Int spawnPosition = new Vector3Int(-1, 8, 0);
     public TextMeshProUGUI ScoreText;
     private int Score = 0;
+    private int _stackedSceneHandle;
+    public bool SceneStack = false;
+    private GameObject playerObject;
+    private bool gameoverflag= false;
 
     public RectInt Bounds {
         get
@@ -39,12 +43,46 @@ public class Board : MonoBehaviour
             tetrominoes[i].Initialize();
         }
     }
-
+    private void OnTriggerEnter2D(Collider2D other){
+        Debug.Log(gameoverflag +" test end" );
+        NetworkObject nob = other.GetComponent<NetworkObject>();
+        if (nob != null)
+        {
+            LoadScene(nob, true);
+        }
+    }
+    void LoadScene(NetworkObject nob, bool entering)
+    {
+        if (!nob.Owner.IsActive) { return; }
+        if(gameoverflag){
+            SceneLookupData lookup;
+            lookup = new SceneLookupData(_stackedSceneHandle,"Arcade");
+            SceneLoadData sld =  new SceneLoadData(lookup);
+            sld.Options.AllowStacking = true;
+            sld.MovedNetworkObjects = new NetworkObject[] {nob};
+            sld.ReplaceScenes = ReplaceOption.All;
+            InstanceFinder.SceneManager.LoadConnectionScenes(nob.Owner,sld);
+        }
+    }
+    private void OnDestroy()
+    {
+        if (InstanceFinder.SceneManager != null) InstanceFinder.SceneManager.OnLoadEnd -= SceneManager_OnLoadEnd;
+    }
     private void Start()
     {
+        InstanceFinder.SceneManager.OnLoadEnd += SceneManager_OnLoadEnd;
+        gameOver.alpha = 0f;
+        gameOver.interactable = false;
+        playerObject = GameObject.FindGameObjectWithTag("Player");
+        playerObject.SetActive(false);
+        Camera playerCamera = playerObject.GetComponentInChildren<Camera>();
+        GameObject targetObject = GameObject.FindWithTag("Tetris_board");
+        if (targetObject != null)
+        {
+            playerCamera.transform.LookAt(targetObject.transform);
+        }
         SpawnPiece();
     }
-
     public void SpawnPiece()
     {
         int random = Random.Range(0, tetrominoes.Length);
@@ -61,9 +99,18 @@ public class Board : MonoBehaviour
 
     public void GameOver()
     {
+        playerObject.SetActive(true);
         tilemap.ClearAllTiles();
         Score = 0;
         UpdateScore(Score);
+        this.enabled = false;
+        gameOver.interactable = true;
+        StartCoroutine(Fade(gameOver, 1f, 1f));
+        if(Score>=1000){
+            Economic economic = playerObject.GetComponent<Economic>();
+            economic.SyncMoneyroutine((Score/200).ToString(),"2",PlayerPrefs.GetString("name"));
+        }
+        gameoverflag = true;
         // Do anything else you want on game over here..
     }
 
@@ -120,7 +167,7 @@ public class Board : MonoBehaviour
             // because the tiles above will fall down when a row is cleared
             if (IsLineFull(row)) {
                 LineClear(row);
-                UpdateScore(Score+=10);
+                UpdateScore(Score+=10); //1000
             } else {
                 row++;
             }
@@ -173,5 +220,28 @@ public class Board : MonoBehaviour
     public void UpdateScore(int score){
         ScoreText.text = score.ToString();
     }
+    private IEnumerator Fade(CanvasGroup canvasGroup, float to, float delay = 0f)
+    {
+        yield return new WaitForSeconds(delay);
 
+        float elapsed = 0f;
+        float duration = 0.5f;
+        float from = canvasGroup.alpha;
+
+        while (elapsed < duration)
+        {
+            canvasGroup.alpha = Mathf.Lerp(from, to, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        canvasGroup.alpha = to;
+    }
+    private void SceneManager_OnLoadEnd(SceneLoadEndEventArgs obj)
+    {
+        if (!obj.QueueData.AsServer) return;
+        if (!SceneStack) return;
+        if (_stackedSceneHandle != 0) return;
+        if (obj.LoadedScenes.Length > 0) _stackedSceneHandle = obj.LoadedScenes[0].handle;
+    }
 }

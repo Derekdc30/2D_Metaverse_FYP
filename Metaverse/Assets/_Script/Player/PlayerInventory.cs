@@ -42,7 +42,8 @@ public class PlayerInventory : NetworkBehaviour
             return;
         }
         economic = GetComponent<Economic>();
-        InvokeRepeating("invokesyncmoney",10f,10f);
+        InvokeRepeating("invokesyncmoney",60f,60f);
+        InvokeRepeating("nvokesyncbackpack",120f,120f);
         worldObjectHolder = GameObject.FindWithTag("WorldObjects").transform;
         inventoryPanel = GameObject.FindWithTag("Inventory");
         inventoryHolder = GameObject.FindWithTag("InventoryHolder").transform;
@@ -53,6 +54,9 @@ public class PlayerInventory : NetworkBehaviour
     }    
     private void invokesyncmoney(){
         economic.SyncMoneyroutine("0","3",PlayerPrefs.GetString("name"));
+    }
+    private void invokesyncbackpack(){
+        SyncInventoryroutine("","","3",PlayerPrefs.GetString("name"));
     }
     private void Update()
     {
