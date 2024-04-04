@@ -1,6 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
 
 public class Drawing : MonoBehaviour, IPointerDownHandler, IDragHandler
 {
@@ -13,6 +17,7 @@ public class Drawing : MonoBehaviour, IPointerDownHandler, IDragHandler
     private Color[] drawingPixels;
     private Texture2D savedTexture;
     public GameObject UI;
+    [SerializeField] string serverUrl = "http://127.0.0.1:3000/user/gallary";
 
     private void Start()
     {
@@ -75,8 +80,53 @@ public class Drawing : MonoBehaviour, IPointerDownHandler, IDragHandler
         Sprite savedSprite = Sprite.Create(savedTexture, new Rect(0, 0, savedTexture.width, savedTexture.height), Vector2.one * 0.5f);
         GameObject Manager = GameObject.FindGameObjectWithTag("GallayManager");
         DrawingManager gallary = Manager.GetComponent<DrawingManager>();
+        int temp = gallary.getindex();
+        string id = temp.ToString() + "_"+PlayerPrefs.GetString("name");
         gallary.AddToGallary(savedSprite);
-        UI.SetActive(false);
+        StartCoroutine(UploadSprite(PlayerPrefs.GetString("name"),"0",savedSprite,id,false));
+    }
+    IEnumerator UploadSprite(string UserName, string mode,Sprite sprite,string id, bool auction)
+    {
+        // Convert the sprite to a texture
+        Texture2D texture = sprite.texture;
+
+        // Encode the texture to PNG format
+        byte[] imageData = texture.EncodeToPNG();
+
+        // Create a new WWWForm
+        WWWForm form = new WWWForm();
+        form.AddField("UserName",UserName);
+        form.AddField("mode",mode);
+        form.AddField("id",id);
+        form.AddField("auction",auction.ToString());
+        if(mode =="0"){
+            form.AddBinaryData("image", imageData, "image.png", "image/png");
+        }
+        
+
+        // Create the UnityWebRequest using the form data
+        using (UnityWebRequest www = UnityWebRequest.Post(serverUrl, form))
+        {
+            // Send the request
+            yield return www.SendWebRequest();
+
+            // Check for errors
+            if (www.result == UnityWebRequest.Result.ConnectionError)
+            {
+                Debug.LogError("Error uploading sprite: " + www.error);
+            }
+            else
+            {
+                if (www.responseCode == 200) // Check if the request was successful
+                {
+                    Debug.Log("Sprite uploaded successfully");
+                }
+                else
+                {
+                    Debug.LogError("Error " + www.responseCode + ": " + www.downloadHandler.text);
+                }
+            }
+        }
     }
 
     private void Update()

@@ -18,7 +18,6 @@ public class FarmManager : NetworkBehaviour
     public const int totalPages = 5;
     public const int slotsPerPage = 6;
     public int totalSlots => totalPages * slotsPerPage;
-    private int currentSlotPrice = 5;
     private const int maxSlotPrice = 20480;
     public FarmingItem BuyslotIcon;
     public FarmingItem PlaceHolder;

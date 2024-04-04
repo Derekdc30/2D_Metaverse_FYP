@@ -28,6 +28,9 @@ public class DrawingManager : NetworkBehaviour
     {
         
     }
+    public int getindex(){
+        return Gallary.Count;
+    }
     public void AddToGallary(Sprite image){
         if(Gallary.Count<6){
             Gallary.Add(image);

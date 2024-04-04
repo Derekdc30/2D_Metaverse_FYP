@@ -3,6 +3,7 @@ const User = require('../Models/User')
 const FriendList = require('../Models/Friendlist');
 const Inventory = require('../Models/Inventory');
 const Farming = require('../Models/Farming');
+const Gallary = require('../Models/Gallary');
 
 
 router.route('/register').post(async(req,res)=>{
@@ -294,6 +295,7 @@ router.route("/Farming").post(async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
    }
 });
+
 
 router.route('')
 module.exports = router
