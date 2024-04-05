@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1285704011071906067}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6454040320503102215
 SpriteRenderer:
@@ -287,7 +287,7 @@ Transform:
   m_Children:
   - {fileID: 6167853634465081018}
   m_Father: {fileID: 1285704011071906067}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8980191566622478109
 MonoBehaviour:
@@ -323,9 +323,11 @@ GameObject:
   - component: {fileID: 8953216946912055818}
   - component: {fileID: 8792517933385940804}
   - component: {fileID: 4124922894927175083}
+  - component: {fileID: 3739045796922123806}
   - component: {fileID: 6336868000994090484}
   - component: {fileID: 5480228657709384559}
   - component: {fileID: -1847148267226586383}
+  - component: {fileID: 4214128699279998693}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -345,7 +347,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4422428636968297135}
   - {fileID: 3706949831417635745}
   - {fileID: 1411416134930496477}
   - {fileID: 459639490953645378}
@@ -423,9 +424,9 @@ MonoBehaviour:
   - {fileID: 354400359281408408}
   - {fileID: 5472589069425560738}
   - {fileID: 8953216946912055818}
+  - {fileID: 3739045796922123806}
   - {fileID: 6336868000994090484}
   - {fileID: 5480228657709384559}
-  - {fileID: 7031094927163307730}
   - {fileID: 8980191566622478109}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField: []
@@ -594,6 +595,21 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &3739045796922123806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7012811820414672308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4128b59b965aa894898b47d4956cb5a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 3
+  _addedNetworkObject: {fileID: 225581097264918878}
+  _networkObjectCache: {fileID: 225581097264918878}
 --- !u!114 &6336868000994090484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -606,7 +622,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd4f85cca7bfd9478df80c4e5547aee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 3
+  _componentIndexCache: 4
   _addedNetworkObject: {fileID: 225581097264918878}
   _networkObjectCache: {fileID: 225581097264918878}
   inventoryObjects: []
@@ -640,7 +656,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e7a48ef9fcd10d448f24b0ca1c4b9a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 4
+  _componentIndexCache: 5
   _addedNetworkObject: {fileID: 225581097264918878}
   _networkObjectCache: {fileID: 225581097264918878}
   friendListObject: {fileID: 313428034625912167, guid: 314b2536456080148aa7bea20e9819c7, type: 3}
@@ -659,97 +675,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoneyURL: http://127.0.0.1:3000/user/Money
---- !u!1 &8517551091304458315
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4422428636968297135}
-  - component: {fileID: 6502933988266874942}
-  - component: {fileID: 7031094927163307730}
-  m_Layer: 0
-  m_Name: Camera
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4422428636968297135
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8517551091304458315}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -7}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1285704011071906067}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!20 &6502933988266874942
-Camera:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8517551091304458315}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
-  m_projectionMatrixMode: 1
-  m_GateFitMode: 2
-  m_FOVAxisMode: 0
-  m_SensorSize: {x: 36, y: 24}
-  m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 50
-  m_NormalizedViewPortRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
-  field of view: 71
-  orthographic: 1
-  orthographic size: 5
-  m_Depth: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 1143
-  m_RenderingPath: -1
-  m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 0
-  m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
-  m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
-  m_StereoConvergence: 10
-  m_StereoSeparation: 0.022
---- !u!114 &7031094927163307730
+--- !u!114 &4214128699279998693
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8517551091304458315}
+  m_GameObject: {fileID: 7012811820414672308}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e23fd67a6088d74f8ed4889a3edff48, type: 3}
+  m_Script: {fileID: 11500000, guid: 5879de1405eaccb4f8525a5517b33392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 5
-  _addedNetworkObject: {fileID: 225581097264918878}
-  _networkObjectCache: {fileID: 225581097264918878}
+  offset: {x: 0, y: 0, z: -10}
 --- !u!1 &9055577265599704867
 GameObject:
   m_ObjectHideFlags: 0
@@ -781,7 +719,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1285704011071906067}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &809995684167261691
 Camera:
