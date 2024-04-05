@@ -61,7 +61,7 @@ mongoose
         UserName: String,
         mode: String,
         id:String,
-        auction:Boolean,
+        auction:String,
         image: Buffer,
         contentType: String
       });
