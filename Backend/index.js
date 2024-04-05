@@ -80,21 +80,22 @@ mongoose
       app.post('/user/gallary', upload.single('image'), async (req, res) => {
         try {
           const { UserName, mode,id,auction } = req.body;
-          const { buffer, mimetype } = req.file;
+          
           if(mode == "0"){
-            const newImage = new Image({
-            UserName,
-            mode,
-            id,
-            auction,
-            image: buffer,
-            contentType: mimetype
-          });
-      
-            // Save the image to MongoDB
-            await newImage.save();
-            console.log("success");
-            res.status(200).send('Image uploaded successfully');
+                const { buffer, mimetype } = req.file;
+                const newImage = new Image({
+                UserName,
+                mode,
+                id,
+                auction,
+                image: buffer,
+                contentType: mimetype
+                });
+        
+                // Save the image to MongoDB
+                await newImage.save();
+                console.log("success");
+                res.status(200).send('Image uploaded successfully');
           }else{
             await Image.updateOne({id:id},{$set:{auction:auction,UserName:UserName}})
           }
@@ -119,15 +120,18 @@ mongoose
           // Find the image by its ID
           const image = await Image.findOne(id);
       
-          if (!image) {
+          if (image.auction == "False") {
             return res.status(404).send('Image not found');
+          }else{
+            res.contentType(image.contentType);
+      
+            // Send the image data
+            res.send(image.image);
+            console.log("send")
           }
       
           // Set the content type based on the image's contentType
-          res.contentType(image.contentType);
-      
-          // Send the image data
-          res.send(image.image);
+          
         } catch (error) {
           console.error('Error retrieving image:', error);
           res.status(500).send('Error retrieving image');
