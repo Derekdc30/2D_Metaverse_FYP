@@ -1,3 +1,4 @@
+
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using System.Collections;
@@ -44,27 +45,4 @@ public class PlayerName : NetworkBehaviour
     {
         _chat.PostMessage(playerName, content, timestamp);
     }
-
-    /* WIP
-    private void OnGUI()
-    {
-        if (!IsOwner) return;
-
-        GUILayoutUtility.GetRect(Screen.width, Screen.height * 0.125f);
-        GUILayout.BeginHorizontal();
-        _messageContent = GUILayout.TextField(_messageContent);
-        if (GUILayout.Button("Send"))
-            ServerPostMessage(DateTime.Now, _messageContent);
-        GUILayout.EndHorizontal();
-        for (int i = 0; i < _chat.Messages.Count; i++)
-        {
-            MessageData message = _chat.Messages[i];
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label($"{message.Timestamp} {message.Sender}: {message.Content}");
-
-            GUILayout.EndHorizontal();
-        }
-    }
-    */
 }

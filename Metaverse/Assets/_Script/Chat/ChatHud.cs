@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 
@@ -9,41 +6,26 @@ public class ChatHud : MonoBehaviour
 {
     public GameObject chatPanel, textObject;
     public TMP_InputField chatBox;
+    public ChatNetworkManager networkManager;
     public int maxMessages = 25;
 
     [SerializeField]
-    List<Message> messagesList = new List<Message>();
-
+    private List<GameObject> messagesList = new List<GameObject>();
 
     private void Update()
     {
-        if(!chatBox.isFocused)
+        if (!string.IsNullOrEmpty(chatBox.text) && Input.GetKeyDown(KeyCode.Return))
         {
-            //Test
-            /*
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                SendMessageToChat("3333");
-            }
-            */
+            networkManager.SendMessageToServer(chatBox.text); // Sending message to server
+            chatBox.text = "";
+            chatBox.ActivateInputField();
         }
-        
-        if(chatBox.text != "")
+        else if (!chatBox.isFocused && Input.GetKeyDown(KeyCode.Return))
         {
-            if(Input.GetKeyDown(KeyCode.Return))
-            {
-                SendMessageToChat(chatBox.text);
-                chatBox.text = "";
-            }
-        }else
-        {
-            if(!chatBox.isFocused && Input.GetKeyDown(KeyCode.Return))
-            {
-                chatBox.ActivateInputField();
-            }
+            chatBox.ActivateInputField();
         }
-        
     }
+
     private void Awake()
     {
         Hide();
@@ -59,26 +41,19 @@ public class ChatHud : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void SendMessageToChat(string message)
+    // This method will be called by ChatNetworkManager to display messages
+    public void ReceiveMessage(string message)
     {
         if (messagesList.Count >= maxMessages)
         {
-            Destroy(messagesList[0].textObject.gameObject);
-            messagesList.Remove(messagesList[0]);
+            Destroy(messagesList[0]);
+            messagesList.RemoveAt(0);
         }
-        Message newMessage = new Message();
-        newMessage.text = message;
+
         GameObject newText = Instantiate(textObject, chatPanel.transform);
-        newMessage.textObject = newText.GetComponent<Text>();
-        newMessage.textObject.text = newMessage.text;
-        messagesList.Add(newMessage);
-    }
+        newText.GetComponent<TMP_Text>().text = message;
+        newText.SetActive(true);
 
-    public class Message
-    {
-        public string text;
-        public Text textObject;
+        messagesList.Add(newText);
     }
-
 }
-

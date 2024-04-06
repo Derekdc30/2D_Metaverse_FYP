@@ -301,7 +301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b96b404edc495974c94344339a9aedc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 6
+  _componentIndexCache: 7
   _addedNetworkObject: {fileID: 225581097264918878}
   _networkObjectCache: {fileID: 225581097264918878}
   usernameText: {fileID: 7972778418573694370}
@@ -427,6 +427,7 @@ MonoBehaviour:
   - {fileID: 3739045796922123806}
   - {fileID: 6336868000994090484}
   - {fileID: 5480228657709384559}
+  - {fileID: 4214128699279998693}
   - {fileID: 8980191566622478109}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField: []
@@ -439,7 +440,7 @@ MonoBehaviour:
   _initializeOrder: 0
   _defaultDespawnType: 0
   NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: 11
+  <PrefabId>k__BackingField: 10
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
@@ -687,6 +688,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5879de1405eaccb4f8525a5517b33392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 6
+  _addedNetworkObject: {fileID: 225581097264918878}
+  _networkObjectCache: {fileID: 225581097264918878}
   offset: {x: 0, y: 0, z: -10}
 --- !u!1 &9055577265599704867
 GameObject:
@@ -698,7 +702,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1411416134930496477}
   - component: {fileID: 809995684167261691}
-  - component: {fileID: 2382231767499928388}
   m_Layer: 0
   m_Name: PlayerMinimapCamera
   m_TagString: Untagged
@@ -764,11 +767,3 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &2382231767499928388
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9055577265599704867}
-  m_Enabled: 1

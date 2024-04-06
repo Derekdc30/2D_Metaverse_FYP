@@ -438,7 +438,7 @@ MonoBehaviour:
   _initializeOrder: 0
   _defaultDespawnType: 0
   NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: 11
+  <PrefabId>k__BackingField: 7
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
@@ -504,6 +504,7 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 225581097264918878}
   _networkObjectCache: {fileID: 225581097264918878}
   moveSpeed: 5
+  syncAnimationState: 
 --- !u!95 &6193953080379780930
 Animator:
   serializedVersion: 5
