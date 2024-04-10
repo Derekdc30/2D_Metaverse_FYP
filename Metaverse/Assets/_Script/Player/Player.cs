@@ -1,7 +1,16 @@
 using UnityEngine;
 using FishNet.Object;
+using FishNet.Object.Synchronizing;
 
 public class Player : NetworkBehaviour
 {
-    // Placeholder.
+    private Transform LocalPostion;
+    [SyncVar]
+    private Transform PostionForServer;
+
+    [ServerRpc]
+    private void SendPosToServer()
+    {
+        PostionForServer = LocalPostion;
+    }
 }
