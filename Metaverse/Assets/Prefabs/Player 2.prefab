@@ -301,7 +301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b96b404edc495974c94344339a9aedc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 8
+  _componentIndexCache: 7
   _addedNetworkObject: {fileID: 225581097264918878}
   _networkObjectCache: {fileID: 225581097264918878}
   usernameText: {fileID: 7972778418573694370}
@@ -330,7 +330,7 @@ GameObject:
   - component: {fileID: 4214128699279998693}
   - component: {fileID: 3976149911064693998}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Player 2
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -429,7 +429,6 @@ MonoBehaviour:
   - {fileID: 6336868000994090484}
   - {fileID: 5480228657709384559}
   - {fileID: 4214128699279998693}
-  - {fileID: 3976149911064693998}
   - {fileID: 8980191566622478109}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField: []
@@ -446,7 +445,7 @@ MonoBehaviour:
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
-  <AssetPathHash>k__BackingField: 7807759643866311769
+  <AssetPathHash>k__BackingField: 9158557418063832253
 --- !u!114 &354400359281408408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -549,8 +548,8 @@ MonoBehaviour:
   _animator: {fileID: 6193953080379780930}
   _smoothFloats: 1
   _interpolation: 2
-  _clientAuthoritative: 1
-  _sendToOwner: 0
+  _clientAuthoritative: 0
+  _sendToOwner: 1
 --- !u!50 &8792517933385940804
 Rigidbody2D:
   serializedVersion: 4
@@ -706,9 +705,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9db4309d1afb443428c1d4123f0a5aad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 7
+  _componentIndexCache: 255
   _addedNetworkObject: {fileID: 225581097264918878}
-  _networkObjectCache: {fileID: 225581097264918878}
+  _networkObjectCache: {fileID: 0}
   spriteRenderer: {fileID: 541047057670804887}
   currentSpriteId: 
 --- !u!1 &9055577265599704867
