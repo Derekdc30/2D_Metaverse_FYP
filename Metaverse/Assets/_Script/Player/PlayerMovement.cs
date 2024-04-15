@@ -15,10 +15,12 @@ public class PlayerMovement : NetworkBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer sr;
     private Animator animator;
+    private AudioSource audioSource; 
     private Vector2 movement;
     private string currentAnimation = "";
     [SyncVar]
     private bool ChangingDirection;
+    private bool isWalking;  // Sync whether the player is walking or not.
 
     public override void OnStartClient()
     {
@@ -28,6 +30,7 @@ public class PlayerMovement : NetworkBehaviour
         {
             //playerCamera.SetActive(true);
             animator = GetComponent<Animator>();
+            audioSource = GetComponent<AudioSource>();
         }
     }
 
@@ -50,6 +53,21 @@ public class PlayerMovement : NetworkBehaviour
         //bool moving = (moveHorizontal != 0f || moveVertical != 0f);
         Flip();
         CheckAnimation();
+        ManageFootsteps(); 
+    }
+
+    private void ManageFootsteps()
+    {
+        if (rb.velocity.sqrMagnitude > 0.01f)  // Use sqrMagnitude for optimization
+        {
+            if (!audioSource.isPlaying)
+                audioSource.Play();
+        }
+        else
+        {
+            if (audioSource.isPlaying)
+                audioSource.Stop();
+        }
     }
 
     private void CheckAnimation()
@@ -97,6 +115,11 @@ public class PlayerMovement : NetworkBehaviour
         sr.flipX = isFilp;
     }
 
+    private void localFootsteps(bool Walking)
+    {
+        isWalking = Walking;
+    } 
+
         
     [ServerRpc]
     private void ChangeDirectionFunction(bool A)
@@ -104,4 +127,8 @@ public class PlayerMovement : NetworkBehaviour
         localFilp(A);
     }
 
+    private void UpdateWalkingState(bool Walking)
+    {
+        localFootsteps(Walking);
+    }
 }

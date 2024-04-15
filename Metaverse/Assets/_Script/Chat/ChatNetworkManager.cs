@@ -1,36 +1,58 @@
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
+using TMPro;
 
 public class ChatNetworkManager : NetworkBehaviour
 {
-    public ChatHud chatHud;
+    public TMP_InputField chatInputField;
+    public GameObject chatContentPanel;  // Attach the content panel of the Scroll View
+    public GameObject chatMessagePrefab;  // The prefab you created for each chat message
 
-    public void SendMessageToServer(string message)
+    public override void OnStartClient()
     {
-        /*
-        if (IsServer) // If this check passes, you're on the server already.
+        base.OnStartClient();
+        Debug.Log("Client started and is ready.");
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return) && chatInputField.text.Trim() != "")
         {
-            Debug.Log("SendMessageToServer called on server. This should only be called from clients.");
-            return;
+            SendChatMessage(chatInputField.text);
+            chatInputField.text = "";
+            chatInputField.ActivateInputField();
         }
-        */
-        // Send to the server.
-        RequestSendMessageToServer(message);
-        Debug.Log(1);
     }
 
-    [ServerRpc]
-    private void RequestSendMessageToServer(string message)
+    private void SendChatMessage(string message)
     {
-        BroadcastMessageToClients(message);
-        Debug.Log(2);
+        if (string.IsNullOrWhiteSpace(message)) return;
+        
+        // Call the server RPC to send the message to all clients
+        SendChatMessageServerRpc(message);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SendChatMessageServerRpc(string message)
+    {
+        UpdateChatHistoryOnAllClients($"[Player {Owner.ClientId}]: {message}\n");
     }
 
     [ObserversRpc]
-    private void BroadcastMessageToClients(string message)
+    private void UpdateChatHistoryOnAllClients(string message)
     {
-        chatHud.ReceiveMessage(message);
-        Debug.Log(3);
+        GameObject msg = Instantiate(chatMessagePrefab, chatContentPanel.transform);
+        msg.GetComponent<Text>().text = message;
+        // Ensure the chat scrolls to the bottom
+        StartCoroutine(ScrollToBottom());
+    }
+
+    private IEnumerator ScrollToBottom()
+    {
+        // Wait for end of frame so that UI elements can update layout
+        yield return new WaitForEndOfFrame();
+        chatContentPanel.transform.parent.GetComponent<ScrollRect>().verticalNormalizedPosition = 0f;
     }
 }

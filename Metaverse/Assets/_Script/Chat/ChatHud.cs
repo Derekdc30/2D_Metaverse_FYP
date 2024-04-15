@@ -12,19 +12,6 @@ public class ChatHud : MonoBehaviour
     [SerializeField]
     private List<GameObject> messagesList = new List<GameObject>();
 
-    private void Update()
-    {
-        if (!string.IsNullOrEmpty(chatBox.text) && Input.GetKeyDown(KeyCode.Return))
-        {
-            networkManager.SendMessageToServer(chatBox.text); // Sending message to server
-            chatBox.text = "";
-            chatBox.ActivateInputField();
-        }
-        else if (!chatBox.isFocused && Input.GetKeyDown(KeyCode.Return))
-        {
-            chatBox.ActivateInputField();
-        }
-    }
 
     private void Awake()
     {

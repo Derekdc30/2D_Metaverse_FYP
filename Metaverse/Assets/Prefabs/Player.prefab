@@ -292,7 +292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b96b404edc495974c94344339a9aedc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 7
+  _componentIndexCache: 8
   _addedNetworkObject: {fileID: 225581097264918878}
   _networkObjectCache: {fileID: 225581097264918878}
   usernameText: {fileID: 7972778418573694370}
@@ -317,8 +317,10 @@ GameObject:
   - component: {fileID: 3739045796922123806}
   - component: {fileID: 6336868000994090484}
   - component: {fileID: 5480228657709384559}
+  - component: {fileID: 215472297863490288}
   - component: {fileID: -1847148267226586383}
   - component: {fileID: 4214128699279998693}
+  - component: {fileID: 2611814695846672320}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -417,6 +419,7 @@ MonoBehaviour:
   - {fileID: 3739045796922123806}
   - {fileID: 6336868000994090484}
   - {fileID: 5480228657709384559}
+  - {fileID: 215472297863490288}
   - {fileID: 4214128699279998693}
   - {fileID: 8980191566622478109}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
@@ -655,6 +658,21 @@ MonoBehaviour:
   friendListObject: {fileID: 313428034625912167, guid: 314b2536456080148aa7bea20e9819c7, type: 3}
   FriendListURL: http://127.0.0.1:3000/user/FriendList
   AddFriendURL: http://127.0.0.1:3000/user/AddFriend
+--- !u!114 &215472297863490288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7012811820414672308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a18fb5990c8bdc4784737d4f64c01fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 6
+  _addedNetworkObject: {fileID: 225581097264918878}
+  _networkObjectCache: {fileID: 225581097264918878}
 --- !u!114 &-1847148267226586383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -680,7 +698,103 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5879de1405eaccb4f8525a5517b33392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 6
+  _componentIndexCache: 7
   _addedNetworkObject: {fileID: 225581097264918878}
   _networkObjectCache: {fileID: 225581097264918878}
   offset: {x: 0, y: 0, z: -10}
+--- !u!82 &2611814695846672320
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7012811820414672308}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 988533561630a0649871aee89ee1a640, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
