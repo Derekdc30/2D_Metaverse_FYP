@@ -54,6 +54,7 @@ public class PlayerMovement : NetworkBehaviour
         Flip();
         CheckAnimation();
         ManageFootsteps(); 
+
     }
 
     private void ManageFootsteps()
@@ -79,6 +80,7 @@ public class PlayerMovement : NetworkBehaviour
         else
             animator.SetBool("Moving", false);
     }
+
      private void ChangeAnimation(string animation, float crossfade = 0.2f)
     {
         if(currentAnimation != animation)
@@ -107,6 +109,11 @@ public class PlayerMovement : NetworkBehaviour
                 ChangeDirectionFunction(ChangingDirection);
             }
         }
+    }
+
+    private void ChangeAvatar(int state)
+    {
+        animator.SetInteger("Character", state);
     }
 
     [ObserversRpc]
