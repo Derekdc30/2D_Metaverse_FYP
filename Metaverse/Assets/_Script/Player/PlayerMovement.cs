@@ -43,12 +43,12 @@ public class PlayerMovement : NetworkBehaviour
 
    
   
-    private void Update(){
+    private void FixedUpdate(){
         if(!base.IsOwner){return;}
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
         movement = new Vector2(moveHorizontal,moveVertical);
-        rb.velocity = movement* moveSpeed;
+        rb.velocity = movement * moveSpeed * Time.deltaTime;
 
         //bool moving = (moveHorizontal != 0f || moveVertical != 0f);
         Flip();
@@ -59,7 +59,7 @@ public class PlayerMovement : NetworkBehaviour
 
     private void ManageFootsteps()
     {
-        if (rb.velocity.sqrMagnitude > 0.01f)  // Use sqrMagnitude for optimization
+        if (rb.velocity.sqrMagnitude > 0.01f && base.IsOwner)  
         {
             if (!audioSource.isPlaying)
                 audioSource.Play();

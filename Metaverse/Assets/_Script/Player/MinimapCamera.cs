@@ -4,26 +4,28 @@ using FishNet.Object.Synchronizing;
 
 public class MinimapCamera : NetworkBehaviour
 {
-    public Vector3 offset = new Vector3(0, 0, -50); // Adjust as needed
-    private Camera minimapCamera;  // Camera for the minimap
+    public Vector3 offset = new Vector3(0, 0, -50);
+    private Camera minimapCamera;
+    private static MinimapCamera instance; // 静态变量用于存储当前应该跟随的玩家
 
     [SyncVar]
-    private Vector3 positionForServer;  // Use Vector3 to synchronize position instead of Transform
+    private Vector3 positionForServer;
 
     public override void OnStartClient()
     {
         base.OnStartClient();
 
-        // Ensure the script is only active for the local player
-        if (!IsOwner)
+        if (instance == null)
         {
-            // Disable the script if this isn't the local player
-            this.enabled = false;
+            instance = this; // 设置当前玩家为应该跟随的玩家
+        }
+        else if (instance != this)
+        {
+            this.enabled = false; // 禁用脚本，不再跟随其他玩家
             return;
         }
 
         minimapCamera = GameObject.FindGameObjectWithTag("MiniMap").GetComponent<Camera>();
-        // Adjust the minimap camera's initial position
         if (minimapCamera != null)
         {
             minimapCamera.transform.position = transform.position + offset;
@@ -32,7 +34,10 @@ public class MinimapCamera : NetworkBehaviour
 
     void LateUpdate()
     {
-        UpdateMinimapCameraPosition(positionForServer);
+        if (instance == this)
+        {
+            UpdateMinimapCameraPosition(positionForServer);
+        }
     }
 
     [ObserversRpc]

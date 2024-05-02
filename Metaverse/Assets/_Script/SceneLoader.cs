@@ -1,31 +1,52 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using System.Collections;
+using TMPro;
 
 public class SceneLoader : MonoBehaviour
 {
-    // 方法来加载场景，传入场景名
+    public Slider progressBar; // 进度条引用
+    public TMP_Text loadingText; // 加载文本引用
+    public Canvas loadingCanvas; // 加载画面的Canvas引用
+
+    void Start()
+    {
+        // 初始化时隐藏加载界面
+        loadingCanvas.gameObject.SetActive(false);
+    }
+
     public void LoadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
     }
 
-    // 方法来异步加载场景，传入场景名
     public void LoadSceneAsync(string sceneName)
     {
+        // 显示加载画面
+        loadingCanvas.gameObject.SetActive(true);
         StartCoroutine(LoadSceneAsyncRoutine(sceneName));
     }
 
-    // 协程处理异步场景加载
     private IEnumerator LoadSceneAsyncRoutine(string sceneName)
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+        asyncLoad.allowSceneActivation = false;
 
-        // 等待加载完成
         while (!asyncLoad.isDone)
         {
-            // 这里可以输出进度 asyncLoad.progress 或显示加载动画
+            progressBar.value = asyncLoad.progress;
+            loadingText.text = "Loading... " + (asyncLoad.progress * 100) + "%";
+
+            if (asyncLoad.progress >= 0.9f)
+            {
+                asyncLoad.allowSceneActivation = true;
+            }
+
             yield return null;
         }
+
+        // 加载完成后隐藏加载界面
+        loadingCanvas.gameObject.SetActive(false);
     }
 }

@@ -3,23 +3,23 @@ using UnityEngine;
 
 public class MusicNetworkPlayer : NetworkBehaviour
 {
-    public AudioClip musicClip; // Public variable to assign music clip in editor
+    public AudioClip musicClip; 
 
     private AudioSource audioSource;
 
     private void Awake()
     {
-        audioSource = gameObject.AddComponent<AudioSource>();  // Add an AudioSource dynamically
-        audioSource.clip = musicClip; // Assign the music clip
-        audioSource.loop = true; // Set to loop
-        audioSource.playOnAwake = false; // Do not play on awake
-        audioSource.spatialBlend = 0; // Set spatial blend to 0 for 2D sound
-        audioSource.volume = 0.3f; // Start at 0.3 volume
+        audioSource = gameObject.AddComponent<AudioSource>();  
+        audioSource.clip = musicClip; 
+        audioSource.loop = true; 
+        audioSource.playOnAwake = false; 
+        audioSource.spatialBlend = 0; 
+        audioSource.volume = 0.3f; 
     }
 
-    public override void OnStartServer()
+    public override void OnStartClient()
     {
-        base.OnStartServer();
-        audioSource.Play();  // Play music when the server starts
+        base.OnStartClient();
+        audioSource.Play();  
     }
 }
