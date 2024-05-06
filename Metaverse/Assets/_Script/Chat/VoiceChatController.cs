@@ -53,6 +53,7 @@ public class VoiceChatController : NetworkBehaviour
 
     private void ToggleRecording(bool isRecording)
     {
+        #if !UNITY_WEBGL || UNITY_EDITOR
         if (isRecording)
         {
             // Start recording
@@ -65,6 +66,9 @@ public class VoiceChatController : NetworkBehaviour
             Microphone.End(null);
             CancelInvoke("SendAudio"); // Stop the scheduled SendAudio calls
         }
+        #else
+        Debug.LogError("Microphone functionality is not supported in WebGL builds.");
+        #endif
     }
 
 
